@@ -14,7 +14,7 @@
                 label="Password"
                 @click:append="show1 = !show1"
             ></v-text-field>
-            <v-btn color="primary">Sign Up</v-btn>
+            <v-btn color="primary" @click="register">Sign Up</v-btn>
           </v-form>
         </v-card-text>
 
@@ -49,7 +49,7 @@ export default {
     }
   },
   methods: {
-    login() {
+    register() {
       const {mail, password} = this;
       axios.post('/register', {
         mail: mail,

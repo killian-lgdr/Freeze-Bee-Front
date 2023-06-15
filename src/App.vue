@@ -3,6 +3,7 @@
     <v-app-bar color="primary" app>
       <v-toolbar-title>CESI Eats</v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-btn to="/catalogs" text>Trouver un restaurant</v-btn>
       <v-btn to="/login" text>Sign In</v-btn>
     </v-app-bar>
 
