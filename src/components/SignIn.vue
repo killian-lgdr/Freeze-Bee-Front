@@ -17,7 +17,6 @@
             <v-btn color="primary" @click="login">Sign In</v-btn>
           </v-form>
         </v-card-text>
-
         <v-card-actions class="justify-center">
           <p class="text-body-2">Don't have an account?
             <router-link to="/register" >Sign Up</router-link>

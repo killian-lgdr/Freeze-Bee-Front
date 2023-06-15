@@ -1,11 +1,11 @@
 <template>
-  <v-container class="create-account-container">
+  <v-container class="manage-account-container">
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
-        <v-card class="create-account-card">
-          <v-card-title class="text-center">Create Account</v-card-title>
+        <v-card class="manage-account-card">
+          <v-card-title class="text-center">Manage Account</v-card-title>
           <v-card-text>
-            <v-form @submit.prevent="createAccount">
+            <v-form @submit.prevent="updateAccount">
               <v-text-field v-model="form.firstName" label="First Name" required></v-text-field>
               <v-text-field v-model="form.name" label="Name" required></v-text-field>
               <v-date-picker v-model="form.birthday" label="Birthday" required></v-date-picker>
@@ -14,7 +14,7 @@
               <v-text-field v-model="form.address.postalCode" label="Postal Code" required></v-text-field>
               <v-text-field v-model="form.address.city" label="City" required></v-text-field>
               <v-text-field v-model="form.address.country" label="Country" required></v-text-field>
-              <v-btn type="submit" color="primary">Create</v-btn>
+              <v-btn type="submit" color="primary">Update</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -27,7 +27,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'CreateAccount',
+  name: 'ManageAccount',
   data() {
     return {
       form: {
@@ -44,15 +44,28 @@ export default {
       },
     };
   },
+  mounted() {
+    this.fetchAccount();
+  },
   methods: {
-    createAccount() {
-      axios.post('http://localhost:8000/account/users', this.form)
+    fetchAccount() {
+      axios.get('http://localhost:8000/account/users')
           .then(response => {
-            console.log('Account created successfully:', response.data);
+            this.form = response.data;
+          })
+          .catch(error => {
+            console.error('Error fetching account:', error);
+            // Ajoutez ici une logique de gestion des erreurs ou un message d'erreur
+          });
+    },
+    updateAccount() {
+      axios.put('http://localhost:8000/account/users', this.form)
+          .then(response => {
+            console.log('Account updated successfully:', response.data);
             // Ajoutez ici une logique de redirection ou un message de succès
           })
           .catch(error => {
-            console.error('Error creating account:', error);
+            console.error('Error updating account:', error);
             // Ajoutez ici une logique de gestion des erreurs ou un message d'erreur
           });
     },

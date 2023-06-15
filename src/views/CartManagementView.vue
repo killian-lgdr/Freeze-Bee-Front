@@ -1,15 +1,14 @@
 <template>
-  <CreateAccount/>
+  <CartManagement/>
 </template>
 
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
-import CreateAccount from "@/components/CreateAccount.vue"; // @ is an alias to /src
+import CartManagement from "@/components/CartManagement.vue"; // @ is an alias to /src
 
 @Options({
   components: {
-    CreateAccount,
-
+    CartManagement,
   },
 
 })
