@@ -12,5 +12,5 @@ import SignIn from '@/components/SignIn.vue'; // @ is an alias to /src
   },
 
 })
-export default class LoginView extends Vue {}
+export default class SignInView extends Vue {}
 </script>

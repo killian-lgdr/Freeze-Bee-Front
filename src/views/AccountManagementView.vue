@@ -12,6 +12,6 @@ import AccountManagement from "@/components/AccountManagement.vue"; // @ is an a
   },
 
 })
-export default class LoginView extends Vue {
+export default class AccountManagementView extends Vue {
 }
 </script>

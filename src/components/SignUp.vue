@@ -32,7 +32,6 @@
 import axios from "../services/axios";
 
 export default {
-  name: "SignUp",
   data() {
     return {
       show1: false,

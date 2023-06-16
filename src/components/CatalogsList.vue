@@ -15,8 +15,7 @@
         <v-card-title class="text-center">{{ catalog.name }}</v-card-title>
         <v-card-text>{{ catalog.description }}</v-card-text>
         <v-card-actions class="justify-center">
-          <v-btn color="secondary" :to="`/menus/${catalog.id}`">View menus</v-btn>
-          <v-btn color="primary" @click="addToCart(catalog)">Add to cart</v-btn>
+          <v-btn color="primary" :to="`/catalogs/${catalog.id}`">View menus</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>

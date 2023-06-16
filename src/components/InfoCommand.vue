@@ -1,0 +1,3 @@
+<template>
+  Here will be info about one command and different button like "pay" with a form etc...
+</template>

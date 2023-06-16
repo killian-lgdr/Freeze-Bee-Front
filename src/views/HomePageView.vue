@@ -12,6 +12,6 @@ import HomePage from '@/components/HomePage.vue'; // @ is an alias to /src
   },
 
 })
-export default class LoginView extends Vue {
+export default class HomePageView extends Vue {
 }
 </script>

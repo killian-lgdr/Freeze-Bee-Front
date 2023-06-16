@@ -1,10 +1,12 @@
 <template>
   <v-app>
     <v-app-bar color="primary" app>
-      <v-toolbar-title>CESI Eats</v-toolbar-title>
+      <v-btn to="/"><v-toolbar-title>CESI Eats</v-toolbar-title></v-btn>
       <v-spacer></v-spacer>
-      <v-btn to="/catalogs" text>Trouver un restaurant</v-btn>
-      <v-btn to="/login" text>Sign In</v-btn>
+      <v-btn to="/catalogs"><v-icon>mdi-silverware-fork-knife</v-icon></v-btn>
+      <v-btn to="/cart" ><v-icon>mdi-cart-variant</v-icon></v-btn>
+      <v-btn to="/account" ><v-icon>mdi-account</v-icon></v-btn>
+      <v-btn to="/login">Sign In</v-btn>
     </v-app-bar>
 
     <v-container class="d-flex align-center justify-center">
@@ -16,24 +18,10 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
 
   data: () => ({
-    //
   }),
 }
 </script>
-<style>
-body{
-  font-family: 'Roboto', sans-serif;
-}
-.align-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-</style>

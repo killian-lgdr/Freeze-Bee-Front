@@ -31,7 +31,6 @@
 import axios from "../services/axios";
 
 export default {
-  name: "SignIn",
   data() {
     return {
       show1: false,

@@ -12,6 +12,6 @@ import CartManagement from "@/components/CartManagement.vue"; // @ is an alias t
   },
 
 })
-export default class LoginView extends Vue {
+export default class CartManagementView extends Vue {
 }
 </script>

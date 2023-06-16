@@ -13,6 +13,6 @@ import CreateAccount from "@/components/CreateAccount.vue"; // @ is an alias to 
   },
 
 })
-export default class LoginView extends Vue {
+export default class CreateAccountView extends Vue {
 }
 </script>

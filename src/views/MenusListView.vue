@@ -1,5 +1,4 @@
 <template>
-  test
   <MenusList/>
 </template>
 
@@ -13,5 +12,5 @@ import MenusList from '@/components/MenusList.vue'; // @ is an alias to /src
   },
 
 })
-export default class LoginView extends Vue {}
+export default class MenusListView extends Vue {}
 </script>

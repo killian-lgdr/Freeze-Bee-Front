@@ -12,5 +12,5 @@ import CatalogsList from '@/components/CatalogsList.vue'; // @ is an alias to /s
   },
 
 })
-export default class LoginView extends Vue {}
+export default class CatalogsListView extends Vue {}
 </script>

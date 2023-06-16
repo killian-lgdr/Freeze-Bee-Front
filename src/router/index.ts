@@ -5,8 +5,11 @@ import CatalogsListView from "@/views/CatalogsListView.vue";
 import MenusListView from "@/views/MenusListView.vue";
 import HomePageView from "@/views/HomePageView.vue";
 import CreateAccountView from "@/views/CreateAccountView.vue";
-import AccountManagement from "@/components/AccountManagement.vue";
+import AccountManagementView from "@/views/AccountManagementView.vue";
 import CartManagementView from "@/views/CartManagementView.vue";
+import InfoMenuView from "@/views/InfoMenuView.vue";
+import CommandHistoricView from "@/views/CommandsHistoricView.vue";
+import InfoCommandView from "@/views/InfoCommandView.vue";
 
 const routes = [
     {
@@ -32,7 +35,7 @@ const routes = [
     {
         path: '/account',
         name: 'account',
-        component: AccountManagement
+        component: AccountManagementView
     },
     {
         path: '/catalogs',
@@ -40,14 +43,29 @@ const routes = [
         component: CatalogsListView
     },
     {
-        path: '/menus/:catalogId',
+        path: '/catalogs/:catalogId',
         name: 'menus',
         component: MenusListView
+    },
+    {
+        path: '/catalogs/:catalogId/menus/:menuId',
+        name: 'menu',
+        component: InfoMenuView
     },
     {
         path: '/cart',
         name: 'cart',
         component: CartManagementView
+    },
+    {
+        path: '/commands',
+        name: 'commands',
+        component: CommandHistoricView
+    },
+    {
+        path: '/commands/:commandId',
+        name: 'command',
+        component: InfoCommandView
     }
 ]
 

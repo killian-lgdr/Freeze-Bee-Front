@@ -1,20 +1,36 @@
 <template>
   <v-row>
-    <v-col v-for="menu in menus" :key="menu.id" cols="12" sm="6" md="4" lg="3">
+    <v-col cols="12">
       <v-card>
         <v-img
-            :src="menu.image"
+            :src="image"
             height="200px"
             cover
         ></v-img>
-        <v-card-title class="text-center">{{ menu.name }}</v-card-title>
-        <v-card-subtitle>{{ menu.description }}</v-card-subtitle>
-        <v-card-text class="text-center">
-          <span v-for="article in menu.articles" :key="article.id">{{ article.name }}</span>
-        </v-card-text>
-
+        <v-card-title class="text-center">{{ name }}</v-card-title>
+        <v-card-subtitle>{{ description }}</v-card-subtitle>
+        <v-row class="justify-center">
+          <v-col v-for="menu in menus" :key="menu.id" cols="10" sm="5">
+            <v-card>
+              <v-img
+                  :src="menu.image"
+                  height="200px"
+                  cover
+              ></v-img>
+              <v-card-title class="text-center">{{ menu.name }}</v-card-title>
+              <v-card-subtitle>{{ menu.description }}</v-card-subtitle>
+              <v-card-text class="text-center">
+                <span v-for="article in menu.articles" :key="article.id">{{ article.name }}</span>
+              </v-card-text>
+              <v-card-actions class="justify-center">
+                <v-btn color="primary" :to="`/catalogs/${this.catalogId}/menus/${menu.id}`">View menu</v-btn>
+                <v-btn color="primary" @click="addToCart(menu)">Add to cart</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
         <v-card-actions class="justify-center">
-          <v-btn color="primary" @click="addToCart(menu)">Add to cart</v-btn>
+          <v-btn color="secondary" :to="`/catalogs`">Back</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -27,6 +43,12 @@ import axios from 'axios';
 export default {
   data() {
     return {
+
+      id: 1,
+      name: "catalog 1",
+      description: "Description du catalog 1",
+      image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
+
       menus: [
         {
           id: 1,
@@ -72,7 +94,7 @@ export default {
             {id: 3, name: "Article 3"},
           ],
         },
-      ],
+      ]
     };
   },
 
@@ -80,13 +102,13 @@ export default {
     //this.fetchRestaurants();
   },
   created() {
-    this.restaurantId = this.$route.params.restaurantId;
+    this.catalogId = this.$route.params.catalogId;
     // Appelez une méthode ou effectuez une requête pour récupérer les menus du restaurant spécifié par l'ID
     this.fetchMenus();
   },
   methods: {
     fetchMenus() {
-      axios.get(`http://localhost:3003/menus?restaurantId=${this.restaurantId}`)
+      axios.get(`http://localhost:3003/menus?restaurantId=${this.catalogId}`)
           .then(response => {
             this.menus = response.data;
           })
