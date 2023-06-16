@@ -43,7 +43,6 @@ import axios from 'axios';
 export default {
   data() {
     return {
-
       id: 1,
       name: "catalog 1",
       description: "Description du catalog 1",

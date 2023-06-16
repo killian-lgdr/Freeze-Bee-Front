@@ -40,8 +40,8 @@ export default {
           postalCode: null,
           city: '',
           country: '',
-        },
-      },
+        }
+      }
     };
   },
   mounted() {
