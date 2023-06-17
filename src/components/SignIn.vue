@@ -14,12 +14,12 @@
                 label="Password"
                 @click:append="show1 = !show1"
             ></v-text-field>
-            <v-btn color="primary" @click="login">Sign In</v-btn>
+            <v-btn color="primary" to="/" @click="login">Sign In</v-btn>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
           <p class="text-body-2">Don't have an account?
-            <router-link to="/register" >Sign Up</router-link>
+            <router-link to="/register">Sign Up</router-link>
           </p>
         </v-card-actions>
       </v-card>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import axios from "../services/axios";
-
+import axios from "@/services/axios";
+import { store } from '@/services/store';
 export default {
   data() {
     return {
@@ -48,12 +48,18 @@ export default {
   methods: {
     login() {
       const {mail, password} = this;
-      axios.post('/login', {
-        mail: mail,
-        password: password,
-      })
+      axios
+          .post('/identity/login', {
+            mail: mail,
+            password: password,
+          })
           .then(function (response) {
-            console.log(response);
+            if (response.data.token !== "") {
+              store.commit('setToken', response.data.token);
+              store.commit('setRefreshToken', response.data.refreshToken);
+            } else {
+              console.log(response.data.message);
+            }
           })
           .catch(function (error) {
             console.log(error.message);
