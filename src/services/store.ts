@@ -4,6 +4,14 @@ import {createStore, Store, useStore as baseUseStore} from 'vuex';
 export interface State {
     token: string | null;
     refreshToken: string | null;
+    snackbar: {
+        show: boolean;
+        message: string;
+        color: string;
+        timeout: number;
+        top: boolean;
+    };
+
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -12,6 +20,13 @@ export const store = createStore<State>({
     state: {
         token: null,
         refreshToken: null,
+        snackbar: {
+            show: false,
+            message: '',
+            color: '',
+            timeout: 3000,
+            top: false,
+        },
     },
 
     mutations: {
@@ -28,6 +43,13 @@ export const store = createStore<State>({
             state.refreshToken = null;
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
+        },
+        showSnackbar(state, { message, color = 'success', timeout = 3000, top = false }) {
+            state.snackbar.message = message;
+            state.snackbar.color = color;
+            state.snackbar.timeout = timeout;
+            state.snackbar.top = top;
+            state.snackbar.show = true;
         },
     },
 

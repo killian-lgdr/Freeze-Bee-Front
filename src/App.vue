@@ -21,6 +21,11 @@
       <v-btn v-if="!isAuthenticated" to="/login">
         <v-icon>mdi-login</v-icon>
       </v-btn>
+
+
+      <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="snackbar.timeout" :top="snackbar.top">
+        {{ snackbar.message }}
+      </v-snackbar>
     </v-app-bar>
 
     <v-container class="d-flex align-center justify-center">
@@ -32,7 +37,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import {computed} from 'vue';
 import { useStore } from '@/services/store';
 
 export default {
@@ -43,12 +48,18 @@ export default {
     const store = useStore();
 
     const isAuthenticated = computed(() => store.getters.isAuthenticated);
+    const snackbar = computed(() => store.state.snackbar);
 
     const logout = () => {
       store.commit('clearTokens');
+      store.commit('showSnackbar', {
+        message: 'Log out successful',
+        color: 'success',
+      });
     };
 
     return {
+      snackbar,
       isAuthenticated,
       logout
     }

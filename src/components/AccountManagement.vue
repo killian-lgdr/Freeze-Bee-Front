@@ -8,8 +8,7 @@
             <v-form @submit.prevent="updateAccount">
               <v-text-field v-model="form.firstName" label="First Name" required></v-text-field>
               <v-text-field v-model="form.name" label="Name" required></v-text-field>
-              <v-text-field v-model="form.birthday" label="Birthday" required></v-text-field>
-              <v-date-picker v-model="form.birthday"></v-date-picker>
+              <v-text-field v-model="form.birthday" label="Birthday" type="date" required></v-text-field>
               <v-text-field v-model="form.phoneNumber" label="Phone Number" required></v-text-field>
               <v-text-field v-model="form.address.street" label="Street" required></v-text-field>
               <v-text-field v-model="form.address.postalCode" label="Postal Code" required></v-text-field>

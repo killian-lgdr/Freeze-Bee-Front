@@ -3,7 +3,6 @@
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
         <v-card class="home-card">
-          <v-img src="path/to/your/image.jpg" class="home-image"></v-img>
           <v-card-title class="text-center">Bienvenue sur CESI Eats</v-card-title>
           <v-card-text>
             <p>Sur CESI Eats, vous pouvez explorer une variété de restaurants et menus pour satisfaire vos papilles.</p>

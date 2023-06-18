@@ -8,11 +8,11 @@
             <v-text-field v-model="mail" :rules="[rules.required, rules.email]" label="Email"></v-text-field>
             <v-text-field
                 v-model="password"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[rules.required, rules.min]"
                 :type="show1 ? 'text' : 'password'"
                 label="Password"
-                @click:append="show1 = !show1"
+                @click:append-inner="show1 = !show1"
             ></v-text-field>
             <v-btn color="primary" @click="register">Sign Up</v-btn>
           </v-form>
@@ -40,6 +40,7 @@ export default {
       type: "",
       rules: {
         required: value => !!value || 'Required.',
+        min: value => (value && value.length >= 6) || 'Password must be at least 6 characters long.',
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'Invalid e-mail.'
