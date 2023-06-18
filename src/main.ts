@@ -16,4 +16,3 @@ app.use(store, key)
 store.dispatch('initializeStore')
 
 app.mount('#app')
-
