@@ -1,14 +1,14 @@
 <template>
-  <InfoCommand/>
+  <InfoOrder/>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import InfoCommand from '@/components/InfoCommand.vue'; // @ is an alias to /src
+import InfoOrder from "@/components/InfoOrder.vue"; // @ is an alias to /src
 
 @Options({
   components: {
-    InfoCommand,
+    InfoOrder
   },
 
 })

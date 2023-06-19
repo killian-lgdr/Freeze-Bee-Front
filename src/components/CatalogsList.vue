@@ -52,15 +52,11 @@ export default {
           .catch(error => {
             console.error(error);
             store.commit('showSnackbar', {
-              message: 'Error while recovering catalogs',
+              message: 'Recover failed',
               color: 'error',
             });
           });
-    },
-    addToCart(catalog) {
-      // Ajouter ici la logique pour ajouter le catalog au panier
-      console.log('catalog ajouté au panier:', catalog);
-    },
+    }
   },
 };
 </script>

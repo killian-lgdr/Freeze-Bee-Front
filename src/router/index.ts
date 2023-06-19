@@ -8,8 +8,8 @@ import CreateAccountView from "@/views/CreateAccountView.vue";
 import AccountManagementView from "@/views/AccountManagementView.vue";
 import CartManagementView from "@/views/CartManagementView.vue";
 import InfoMenuView from "@/views/InfoMenuView.vue";
-import CommandHistoricView from "@/views/CommandsHistoricView.vue";
-import InfoCommandView from "@/views/InfoCommandView.vue";
+import OrdersHistoricView from "@/views/OrdersHistoricView.vue";
+import InfoOrderView from "@/views/InfoOrderView.vue";
 
 const routes = [
     {
@@ -58,14 +58,14 @@ const routes = [
         component: CartManagementView
     },
     {
-        path: '/commands',
-        name: 'commands',
-        component: CommandHistoricView
+        path: '/orders',
+        name: 'orders',
+        component: OrdersHistoricView
     },
     {
-        path: '/commands/:commandId',
-        name: 'command',
-        component: InfoCommandView
+        path: '/orders/:orderId',
+        name: 'order',
+        component: InfoOrderView
     }
 ]
 

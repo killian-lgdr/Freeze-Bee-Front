@@ -11,35 +11,36 @@
               </v-col>
             </v-row>
             <v-row v-else>
-              <v-col v-for="menu in cart" :key="menu.id" cols="12" sm="6" md="4">
+              <v-col v-for="menu in cart.menus" :key="menu.id" cols="12" sm="6" md="4">
                 <v-card>
                   <v-img :src="menu.image" height="200px" cover></v-img>
                   <v-card-title class="text-center">{{ menu.name }}</v-card-title>
                   <v-card-subtitle>{{ menu.description }}</v-card-subtitle>
                   <v-card-actions class="justify-center">
-                    <v-btn color="error" @click="removeFromCart(menu.id)">Remove</v-btn>
+                    <v-btn color="error" @click="removeFromCart(menu.id)" :to="`/cart`">Remove</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-col>
             </v-row>
           </v-card-text>
-          <v-card-actions class="justify-center">
-            <v-btn color="primary" @click="order" :disabled="cart.length === 0">Order</v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
+  <InfoPayment v-if="isCartLoaded" :cartId="cart.id" />
 </template>
 
 <script>
 import axios from '@/services/axios';
 import {store} from "@/services/store";
+import InfoPayment from "@/components/InfoPayment.vue";
 
 export default {
+  components: {InfoPayment},
   data() {
     return {
-      cart: []
+      cart: {menus: []},
+      isCartLoaded: false
     }
   },
   mounted() {
@@ -54,6 +55,7 @@ export default {
       axios.get('/mycart')
           .then(response => {
             this.cart = response.data;
+            this.isCartLoaded = true;
             store.commit('showSnackbar', {
               message: 'Cart recovered',
               color: 'success',
@@ -62,34 +64,36 @@ export default {
           .catch(error => {
             console.error(error);
             store.commit('showSnackbar', {
-              message: 'Error while recovering cart',
+              message: 'Recover failed',
               color: 'error',
             });
           });
     },
     removeFromCart(id) {
-      axios.delete(`/cart/${id}`)
+      this.isCartLoaded = false;
+      store.commit('showSnackbar', {
+        message: 'Updating menus...',
+        color: 'info',
+      });
+      const newCart = this.cart;
+      newCart.menus = this.cart.menus.filter(menu => menu.id !== id);
+      axios.put(`/mycart`, {cart: newCart})
           .then(response => {
             this.cart = response.data;
+            store.commit('showSnackbar', {
+              message: 'Menus updated',
+              color: 'success',
+            });
           })
-          .catch(error => {
-            console.error('Error fetching cart:', error);
-            // Ajoutez ici une logique de gestion des erreurs ou un message d'erreur
+          .catch(() => {
+            store.commit('showSnackbar', {
+              message: 'Update failed',
+              color: 'error',
+            });
           });
+      this.fetchCart();
     }
   },
-  order() {
-    axios.post('/command', {cart: this.cart})
-        .then(response => {
-          console.log('Order placed successfully:', response.data);
-          // Ajoutez ici une logique de redirection ou un message de succès
-        })
-        .catch(error => {
-          console.error('Error placing order:', error);
-          // Ajoutez ici une logique de gestion des erreurs ou un message d'erreur
-        });
-  }
-
 };
 </script>
 

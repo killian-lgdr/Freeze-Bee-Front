@@ -25,7 +25,7 @@ export const store = createStore<State>({
             message: '',
             color: '',
             timeout: 3000,
-            top: false,
+            top: false
         },
     },
 
@@ -44,7 +44,7 @@ export const store = createStore<State>({
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
         },
-        showSnackbar(state, { message, color = 'success', timeout = 3000, top = false }) {
+        showSnackbar(state, { message, color = 'success', timeout = 3000, top = false,onClick = true }) {
             state.snackbar.message = message;
             state.snackbar.color = color;
             state.snackbar.timeout = timeout;

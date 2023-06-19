@@ -4,13 +4,11 @@
 
 <script lang="ts">
 import {Options, Vue} from 'vue-class-component';
-import CartManagement from "@/components/CartManagement.vue"; // @ is an alias to /src
-
+import CartManagement from "@/components/CartManagement.vue";
 @Options({
   components: {
-    CartManagement,
+    CartManagement
   },
-
 })
 export default class CartManagementView extends Vue {
 }

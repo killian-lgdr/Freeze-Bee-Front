@@ -14,7 +14,7 @@
               <v-text-field v-model="form.address.postalCode" label="Postal Code" required></v-text-field>
               <v-text-field v-model="form.address.city" label="City" required></v-text-field>
               <v-text-field v-model="form.address.country" label="Country" required></v-text-field>
-              <v-btn type="submit" color="primary">Create</v-btn>
+              <v-btn type="submit" :to="`/signin`" color="primary">Create</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/services/axios';
+import {store} from "@/services/store";
 
 export default {
   data() {
     return {
-
       form: {
         firstName: '',
         name: '',
@@ -46,14 +46,22 @@ export default {
   },
   methods: {
     createAccount() {
-      axios.post('http://localhost:8000/account/users', this.form)
-          .then(response => {
-            console.log('Account created successfully:', response.data);
-            // Ajoutez ici une logique de redirection ou un message de succès
+      store.commit('showSnackbar', {
+        message: 'Creating account...',
+        color: 'info',
+      });
+      axios.post('/accounts', this.form)
+          .then(() => {
+            store.commit('showSnackbar', {
+              message: 'Account created',
+              color: 'success',
+            });
           })
-          .catch(error => {
-            console.error('Error creating account:', error);
-            // Ajoutez ici une logique de gestion des erreurs ou un message d'erreur
+          .catch(() => {
+            store.commit('showSnackbar', {
+              message: 'Creation failed',
+              color: 'error',
+            });
           });
     },
   },

@@ -14,9 +14,12 @@
               <v-text-field v-model="form.address.postalCode" label="Postal Code" required></v-text-field>
               <v-text-field v-model="form.address.city" label="City" required></v-text-field>
               <v-text-field v-model="form.address.country" label="Country" required></v-text-field>
-              <v-btn type="submit" color="primary">Update</v-btn>
             </v-form>
           </v-card-text>
+          <v-card-actions class="justify-center">
+            <v-btn type="submit" color="primary" @click="updateAccount()" :to="`/account`">Update</v-btn>
+            <v-btn type="submit" color="error" @click="deleteAccount()" :to="`/`">Delete</v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -70,14 +73,41 @@ export default {
           });
     },
     updateAccount() {
-      axios.put('http://localhost:8000/account/users', this.form)
-          .then(response => {
-            console.log('Account updated successfully:', response.data);
-            // Ajoutez ici une logique de redirection ou un message de succès
+      store.commit('showSnackbar', {
+        message: 'Updating account...',
+        color: 'info',
+      });
+      axios.put('/myaccount', this.form)
+          .then(() => {
+            store.commit('showSnackbar', {
+              message: 'Account updated',
+              color: 'success',
+            });
           })
-          .catch(error => {
-            console.error('Error updating account:', error);
-            // Ajoutez ici une logique de gestion des erreurs ou un message d'erreur
+          .catch(() => {
+            store.commit('showSnackbar', {
+              message: 'Update failed',
+              color: 'error',
+            });
+          });
+    },
+    deleteAccount() {
+      store.commit('showSnackbar', {
+        message: 'Deleting account...',
+        color: 'info',
+      });
+      axios.delete('/myaccount')
+          .then(() => {
+            store.commit('showSnackbar', {
+              message: 'Account deleted',
+              color: 'success',
+            });
+          })
+          .catch(() => {
+            store.commit('showSnackbar', {
+              message: 'delete failed',
+              color: 'error',
+            });
           });
     },
   },

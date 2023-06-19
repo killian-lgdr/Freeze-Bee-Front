@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row v-if="isCatalogLoaded">
     <v-col cols="12">
       <v-card>
         <v-img
@@ -8,7 +8,7 @@
             cover
         ></v-img>
         <v-card-title class="text-center">{{ catalog.name }}</v-card-title>
-        <v-card-subtitle>{{ description }}</v-card-subtitle>
+        <v-card-subtitle>{{ catalog.description }}</v-card-subtitle>
         <v-row class="justify-center">
           <v-col v-for="menu in catalog.menus" :key="menu.id" cols="10" sm="5">
             <v-card>
@@ -40,12 +40,13 @@
 
 <script>
 import axios from '@/services/axios';
-import {store} from "@/services/store";
+import { store } from '@/services/store';
 
 export default {
   data() {
     return {
-      catalog: {}
+      catalog: {},
+      isCatalogLoaded: false
     };
   },
 
@@ -59,9 +60,11 @@ export default {
         message: 'Recovering menus...',
         color: 'info',
       });
-      axios.get(`/catalogs/${this.catalogId}`)
+      axios
+          .get(`/catalogs/${this.catalogId}`)
           .then(response => {
             this.catalog = response.data;
+            this.isCatalogLoaded = true;
             store.commit('showSnackbar', {
               message: 'Menus recovered',
               color: 'success',
@@ -75,9 +78,44 @@ export default {
             });
           });
     },
-    addToCart(restaurant) {
-      // Ajouter ici la logique pour ajouter le restaurant au panier
-      console.log('Menu ajouté au panier:', restaurant);
+    addToCart(menu) {
+      store.commit('showSnackbar', {
+        message: 'Recover and update Cart...',
+        color: 'info',
+      });
+      axios
+          .get('/mycart')
+          .then(response => {
+            const cart =response.data
+            cart.menus = cart.menus.map(item => item.id);
+            cart.menus = [...cart.menus, menu.id];
+            store.commit('showSnackbar', {
+              message: 'Cart recovered',
+              color: 'success',
+            });
+            axios
+                .put('/mycart', cart)
+                .then(() => {
+                  store.commit('showSnackbar', {
+                    message: 'Cart updated',
+                    color: 'success',
+                  });
+                })
+                .catch(error => {
+                  console.error(error);
+                  store.commit('showSnackbar', {
+                    message: 'Recover failed',
+                    color: 'error',
+                  });
+                });
+          })
+          .catch(error => {
+            console.error(error);
+            store.commit('showSnackbar', {
+              message: 'Recover failed',
+              color: 'error',
+            });
+          });
     },
   },
 };

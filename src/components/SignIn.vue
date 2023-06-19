@@ -67,15 +67,13 @@ export default {
                 color: 'success',
               });
             } else {
-              console.log(response.data.message);
               store.commit('showSnackbar', {
                 message: 'Login failed',
                 color: 'error',
               });
             }
           })
-          .catch(function (error) {
-            console.log(error.message);
+          .catch(function () {
             store.commit('showSnackbar', {
               message: 'Login failed',
               color: 'error',

@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row v-if="isMenuLoaded">
     <v-col cols="12">
       <v-card>
         <v-img :src="menu.image" height="200px" cover></v-img>
@@ -32,7 +32,8 @@ import {store} from "@/services/store";
 export default {
   data() {
     return {
-      menu: {}
+      menu: {},
+      isMenuLoaded: false
     };
   },
 
@@ -50,6 +51,7 @@ export default {
       axios.get(`/catalogs/${this.catalogId}/menus/${this.menuId}`)
           .then(response => {
             this.menu = response.data;
+            this.isMenuLoaded = true;
             store.commit('showSnackbar', {
               message: 'Menu recovered',
               color: 'success',
@@ -63,10 +65,45 @@ export default {
             });
           });
     },
-    addToCart(restaurant) {
-      // Ajouter ici la logique pour ajouter le restaurant au panier
-      console.log('Menu ajouté au panier:', restaurant);
-    },
+    addToCart(menu) {
+      store.commit('showSnackbar', {
+        message: 'Recover and update Cart...',
+        color: 'info',
+      });
+      axios
+          .get('/mycart')
+          .then(response => {
+            const cart =response.data
+            cart.menus = cart.menus.map(item => item.id);
+            cart.menus = [...cart.menus, menu.id];
+            store.commit('showSnackbar', {
+              message: 'Cart recovered',
+              color: 'success',
+            });
+            axios
+                .put('/mycart', cart)
+                .then(() => {
+                  store.commit('showSnackbar', {
+                    message: 'Cart updated',
+                    color: 'success',
+                  });
+                })
+                .catch(error => {
+                  console.error(error);
+                  store.commit('showSnackbar', {
+                    message: 'Recover failed',
+                    color: 'error',
+                  });
+                });
+          })
+          .catch(error => {
+            console.error(error);
+            store.commit('showSnackbar', {
+              message: 'Recover failed',
+              color: 'error',
+            });
+          });
+    }
   },
 };
 </script>
