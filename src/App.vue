@@ -38,11 +38,34 @@
 
 <script>
 import {computed} from 'vue';
-import { useStore } from '@/services/store';
+import {useStore} from '@/services/store';
+import { useRouter } from 'vue-router';
+import axios from "@/services/axios";
+import { store } from '@/services/store';
 
 export default {
   name: 'App',
-
+  created() {
+    this.checkAccountStatus();
+  },
+  methods: {
+    checkAccountStatus() {
+      // Vérifier l'état du compte uniquement si les tokens existent
+      if (store.getters.isAuthenticated) {
+        axios.get('/myaccount')
+            .then(() => {
+              // Account exists, user can access the application
+            })
+            .catch(() => {
+              const router = useRouter();
+              // Account does not exist, redirect the user to the create account page
+              router.push({ name: 'createaccount' });
+              // or
+              this.$emit('account-not-created'); // Emit a custom event to display an error message
+            });
+      }
+    },
+  },
   data: () => ({}),
   setup() {
     const store = useStore();

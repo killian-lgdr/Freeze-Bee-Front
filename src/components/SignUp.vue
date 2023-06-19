@@ -58,6 +58,7 @@ export default {
       })
           .then(function (response) {
             console.log(response);
+            this.$router.push('/createaccount');
           })
           .catch(function (error) {
             console.log(error.message);
