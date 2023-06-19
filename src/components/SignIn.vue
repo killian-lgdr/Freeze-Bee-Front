@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import axios from "@/services/axios";
+import axios from "axios";
 import { store } from '@/services/store';
 export default {
   data() {
@@ -50,11 +50,11 @@ export default {
     login() {
       const {mail, password} = this;
       store.commit('showSnackbar', {
-        message: 'connecting...',
+        message: 'Connecting...',
         color: 'info',
       });
       axios
-          .post('/identity/login', {
+          .post('http://localhost:8000/identity/login', {
             mail: mail,
             password: password,
           })

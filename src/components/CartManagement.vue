@@ -33,46 +33,13 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/services/axios';
+import {store} from "@/services/store";
 
 export default {
   data() {
     return {
-      cart: [
-        {
-          id: 1,
-          name: "Menu 1",
-          description: "Description du menu 1",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-          articles: [
-            {id: 1, name: "Article 1"},
-            {id: 2, name: "Article 2"},
-            {id: 3, name: "Article 3"},
-          ],
-        },
-        {
-          id: 1,
-          name: "Menu 1",
-          description: "Description du menu 1",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-          articles: [
-            {id: 1, name: "Article 1"},
-            {id: 2, name: "Article 2"},
-            {id: 3, name: "Article 3"},
-          ],
-        },
-        {
-          id: 2,
-          name: "Menu 2",
-          description: "Description du menu 2",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-          articles: [
-            {id: 1, name: "Article 1"},
-            {id: 2, name: "Article 2"},
-            {id: 3, name: "Article 3"},
-          ],
-        }
-      ]
+      cart: []
     }
   },
   mounted() {
@@ -80,17 +47,28 @@ export default {
   },
   methods: {
     fetchCart() {
-      axios.get('http://localhost:8000/cart')
+      store.commit('showSnackbar', {
+        message: 'Recovering cart...',
+        color: 'info',
+      });
+      axios.get('/mycart')
           .then(response => {
             this.cart = response.data;
+            store.commit('showSnackbar', {
+              message: 'Cart recovered',
+              color: 'success',
+            });
           })
           .catch(error => {
-            console.error('Error fetching cart:', error);
-            // Ajoutez ici une logique de gestion des erreurs ou un message d'erreur
+            console.error(error);
+            store.commit('showSnackbar', {
+              message: 'Error while recovering cart',
+              color: 'error',
+            });
           });
     },
     removeFromCart(id) {
-      axios.delete(`http://localhost:8000/cart/${id}`)
+      axios.delete(`/cart/${id}`)
           .then(response => {
             this.cart = response.data;
           })
@@ -101,7 +79,7 @@ export default {
     }
   },
   order() {
-    axios.post('http://localhost:8000/command', {cart: this.cart})
+    axios.post('/command', {cart: this.cart})
         .then(response => {
           console.log('Order placed successfully:', response.data);
           // Ajoutez ici une logique de redirection ou un message de succès

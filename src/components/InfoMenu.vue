@@ -2,16 +2,17 @@
   <v-row>
     <v-col cols="12">
       <v-card>
-        <v-img :src="image" height="200px" cover></v-img>
-        <v-card-title class="text-center">{{ name }}</v-card-title>
-        <v-card-subtitle>{{ description }}</v-card-subtitle>
-
+        <v-img :src="menu.image" height="200px" cover></v-img>
+        <v-card-title class="text-center">{{ menu.name }}</v-card-title>
+        <v-card-subtitle>{{ menu.description }}</v-card-subtitle>
+        <v-card-text>💰{{ menu.price }}</v-card-text>
         <v-row>
-          <v-col v-for="article in articles" :key="article.id" cols="12" sm="6" md="4" lg="3">
+          <v-col v-for="article in menu.articles" :key="article.id" cols="12" sm="6" md="4" lg="3">
             <v-card>
               <v-img :src="article.image" height="200px" cover></v-img>
               <v-card-title class="text-center">{{ article.name }}</v-card-title>
               <v-card-subtitle>{{ article.description }}</v-card-subtitle>
+              <v-card-text>💰{{ article.price }}</v-card-text>
             </v-card>
           </v-col>
         </v-row>
@@ -25,48 +26,41 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/services/axios';
+import {store} from "@/services/store";
 
 export default {
   data() {
     return {
-      id: 1,
-      name: "Menu 1",
-      description: "Description du menu 1",
-      image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-      articles: [
-        {
-          id: 1,
-          name: "Article 1",
-          description: "Description de l'article 1",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-        },
-        {
-          id: 2,
-          name: "Article 2",
-          description: "Description de l'article 2",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-        },
-      ]
+      menu: {}
     };
   },
 
   mounted() {
-    //this.fetchRestaurants();
-  },
-  created() {
     this.catalogId = this.$route.params.catalogId;
-    // Appelez une méthode ou effectuez une requête pour récupérer les menus du restaurant spécifié par l'ID
+    this.menuId = this.$route.params.menuId;
     this.fetchMenus();
   },
   methods: {
     fetchMenus() {
-      axios.get(`http://localhost:3003/menus?restaurantId=${this.catalogId}`)
+      store.commit('showSnackbar', {
+        message: 'Recovering menu...',
+        color: 'info',
+      });
+      axios.get(`/catalogs/${this.catalogId}/menus/${this.menuId}`)
           .then(response => {
-            this.menus = response.data;
+            this.menu = response.data;
+            store.commit('showSnackbar', {
+              message: 'Menu recovered',
+              color: 'success',
+            });
           })
           .catch(error => {
             console.error(error);
+            store.commit('showSnackbar', {
+              message: 'Error while recovering menu',
+              color: 'error',
+            });
           });
     },
     addToCart(restaurant) {

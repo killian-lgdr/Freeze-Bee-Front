@@ -24,7 +24,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/services/axios';
+import {store} from "@/services/store";
 
 export default {
   data() {
@@ -32,11 +33,11 @@ export default {
       form: {
         firstName: '',
         name: '',
-        birthday: null,
-        phoneNumber: null,
+        birthday: '',
+        phoneNumber: '',
         address: {
           street: '',
-          postalCode: null,
+          postalCode: '',
           city: '',
           country: '',
         }
@@ -48,13 +49,24 @@ export default {
   },
   methods: {
     fetchAccount() {
-      axios.get('http://localhost:8000/account/users')
+      store.commit('showSnackbar', {
+        message: 'Recovering account...',
+        color: 'info',
+      });
+      axios.get('/myaccount')
           .then(response => {
             this.form = response.data;
+            store.commit('showSnackbar', {
+              message: 'Account recovered',
+              color: 'success',
+            });
           })
           .catch(error => {
-            console.error('Error fetching account:', error);
-            // Ajoutez ici une logique de gestion des erreurs ou un message d'erreur
+            console.error(error);
+            store.commit('showSnackbar', {
+              message: 'Error while recovering account',
+              color: 'error',
+            });
           });
     },
     updateAccount() {

@@ -39,9 +39,9 @@
 <script>
 import {computed} from 'vue';
 import {useStore} from '@/services/store';
-import { useRouter } from 'vue-router';
+//import {useRouter} from 'vue-router';
 import axios from "@/services/axios";
-import { store } from '@/services/store';
+import {store} from '@/services/store';
 
 export default {
   name: 'App',
@@ -57,9 +57,9 @@ export default {
               // Account exists, user can access the application
             })
             .catch(() => {
-              const router = useRouter();
+              //const router = useRouter();
               // Account does not exist, redirect the user to the create account page
-              router.push({ name: 'createaccount' });
+              //router.push('createaccount');
               // or
               this.$emit('account-not-created'); // Emit a custom event to display an error message
             });

@@ -23,50 +23,38 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/services/axios';
+import {store} from "@/services/store";
 
 export default {
   data() {
     return {
-      catalogs: [
-        {
-          id: 1,
-          name: "catalog 1",
-          description: "Description du catalog 1",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-        },
-        {
-          id: 2,
-          name: "catalog 2",
-          description: "Description du catalog 2",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-        },
-        {
-          id: 3,
-          name: "catalog 3",
-          description: "Description du catalog 3",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-        },
-        {
-          id: 4,
-          name: "catalog 4",
-          description: "Description du catalog 4",
-          image: "https://dkrn4sk0rn31v.cloudfront.net/uploads/2022/10/o-que-e-e-como-comecar-com-golang.jpg",
-        },
-      ],
+      catalogs: [],
     };
   },
   mounted() {
-    //this.fetchcatalogs();
+    this.fetchCatalogs();
   },
   methods: {
-    fetchcatalogs() {
-      axios.get('http://localhost:3003/catalogs')
+    fetchCatalogs() {
+      store.commit('showSnackbar', {
+        message: 'Recovering catalogs...',
+        color: 'info',
+      });
+      axios.get('/catalogs')
           .then(response => {
             this.catalogs = response.data;
+            store.commit('showSnackbar', {
+              message: 'Catalogs recovered',
+              color: 'success',
+            });
           })
           .catch(error => {
             console.error(error);
+            store.commit('showSnackbar', {
+              message: 'Error while recovering catalogs',
+              color: 'error',
+            });
           });
     },
     addToCart(catalog) {
