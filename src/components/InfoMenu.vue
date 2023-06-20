@@ -17,8 +17,8 @@
           </v-col>
         </v-row>
         <v-card-actions class="justify-center">
-          <v-btn color="primary" @click="addToCart(menu)">Add to cart</v-btn>
-          <v-btn color="secondary" :to="`/catalogs/${this.catalogId}`">Back</v-btn>
+          <v-btn color="secondary" @click="addToCart(menu)">Add to cart</v-btn>
+          <v-btn color="error" :to="`/catalogs/${this.catalogId}`">Back</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>

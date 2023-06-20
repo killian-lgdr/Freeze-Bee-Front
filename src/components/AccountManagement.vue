@@ -96,7 +96,7 @@ export default {
         message: 'Deleting account...',
         color: 'info',
       });
-      axios.delete('/myaccount')
+      axios.delete('/accounts')
           .then(() => {
             store.commit('showSnackbar', {
               message: 'Account deleted',

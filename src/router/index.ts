@@ -4,7 +4,6 @@ import SignUpView from "@/views/SignUpView.vue";
 import CatalogsListView from "@/views/CatalogsListView.vue";
 import MenusListView from "@/views/MenusListView.vue";
 import HomePageView from "@/views/HomePageView.vue";
-import CreateAccountView from "@/views/CreateAccountView.vue";
 import AccountManagementView from "@/views/AccountManagementView.vue";
 import CartManagementView from "@/views/CartManagementView.vue";
 import InfoMenuView from "@/views/InfoMenuView.vue";
@@ -26,11 +25,6 @@ const routes = [
         path: '/register',
         name: 'register',
         component: SignUpView
-    },
-    {
-        path: '/createaccount',
-        name: 'createaccount',
-        component: CreateAccountView
     },
     {
         path: '/account',

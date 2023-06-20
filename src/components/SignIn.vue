@@ -14,11 +14,11 @@
                 label="Password"
                 @click:append-inner="show1 = !show1"
             ></v-text-field>
-            <v-btn color="primary" to="/" @click="login">Sign In</v-btn>
+            <v-btn color="primary" to="/catalogs" @click="login">Sign In</v-btn>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
-          <p class="text-body-2">Don't have an account?
+          <p>Don't have an account?
             <router-link to="/register">Sign Up</router-link>
           </p>
         </v-card-actions>
