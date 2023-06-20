@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import axios from '@/services/axios';
+import {bffAxios} from '@/services/axios';
 import {store} from "@/services/store";
 
 export default {
@@ -41,7 +41,7 @@ export default {
         message: 'Recovering catalogs...',
         color: 'info',
       });
-      axios.get('/catalogs')
+      bffAxios.get('/catalogs')
           .then(response => {
             this.catalogs = response.data;
             store.commit('showSnackbar', {

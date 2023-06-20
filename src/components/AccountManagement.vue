@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import axios from '@/services/axios';
+import {bffAxios} from '@/services/axios';
 import {store} from "@/services/store";
 
 export default {
@@ -56,7 +56,7 @@ export default {
         message: 'Recovering account...',
         color: 'info',
       });
-      axios.get('/myaccount')
+      bffAxios.get('/myaccount')
           .then(response => {
             this.form = response.data;
             store.commit('showSnackbar', {
@@ -77,7 +77,7 @@ export default {
         message: 'Updating account...',
         color: 'info',
       });
-      axios.put('/myaccount', this.form)
+      bffAxios.put('/myaccount', this.form)
           .then(() => {
             store.commit('showSnackbar', {
               message: 'Account updated',
@@ -96,7 +96,7 @@ export default {
         message: 'Deleting account...',
         color: 'info',
       });
-      axios.delete('/accounts')
+      bffAxios.delete('/accounts')
           .then(() => {
             store.commit('showSnackbar', {
               message: 'Account deleted',

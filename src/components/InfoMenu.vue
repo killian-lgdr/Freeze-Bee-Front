@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from '@/services/axios';
+import {bffAxios} from '@/services/axios';
 import {store} from "@/services/store";
 
 export default {
@@ -48,7 +48,7 @@ export default {
         message: 'Recovering menu...',
         color: 'info',
       });
-      axios.get(`/catalogs/${this.catalogId}/menus/${this.menuId}`)
+      bffAxios.get(`/catalogs/${this.catalogId}/menus/${this.menuId}`)
           .then(response => {
             this.menu = response.data;
             this.isMenuLoaded = true;
@@ -70,8 +70,7 @@ export default {
         message: 'Recover and update Cart...',
         color: 'info',
       });
-      axios
-          .get('/mycart')
+      bffAxios.get('/mycart')
           .then(response => {
             const cart =response.data
             cart.menus = cart.menus.map(item => item.id);
@@ -80,8 +79,7 @@ export default {
               message: 'Cart recovered',
               color: 'success',
             });
-            axios
-                .put('/mycart', cart)
+            bffAxios.put('/mycart', cart)
                 .then(() => {
                   store.commit('showSnackbar', {
                     message: 'Cart updated',

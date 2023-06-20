@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import {identityAxios} from "@/services/axios";
 import { store } from '@/services/store';
 export default {
   data() {
@@ -53,8 +53,7 @@ export default {
         message: 'Connecting...',
         color: 'info',
       });
-      axios
-          .post('http://localhost:8000/identity/login', {
+      identityAxios.post('/login', {
             mail: mail,
             password: password,
           })

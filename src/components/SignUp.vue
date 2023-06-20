@@ -8,9 +8,9 @@
               <v-card-title class="text-center">Sign Up</v-card-title>
               <v-card-text>
                 <v-form>
-                  <v-text-field v-model="mail" :rules="[rules.required, rules.email]" label="Email"></v-text-field>
+                  <v-text-field v-model="credentials.mail" :rules="[rules.required, rules.email]" label="Email"></v-text-field>
                   <v-text-field
-                      v-model="password"
+                      v-model="credentials.password"
                       :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                       :rules="[rules.required, rules.min]"
                       :type="show1 ? 'text' : 'password'"
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import axios from "../services/axios";
+import {identityAxios, bffAxios} from "@/services/axios";
 import {store} from "@/services/store";
 
 export default {
@@ -93,17 +93,29 @@ export default {
   methods: {
     register() {
       const {mail, password} = this.credentials;
-      axios.post('/register', {
+      store.commit('showSnackbar', {
+        message: 'Creating identity...',
+        color: 'info',
+      });
+      identityAxios.post('/register', {
         mail: mail,
         password: password,
         type: "user"
       })
           .then(function (response) {
             console.log(response);
+            store.commit('showSnackbar', {
+              message: 'Identity created',
+              color: 'success',
+            });
             this.createAccount()
           })
           .catch(function (error) {
             console.log(error.message);
+            store.commit('showSnackbar', {
+              message: 'Identity creation failed',
+              color: 'error',
+            });
           });
     },
     createAccount() {
@@ -111,7 +123,7 @@ export default {
         message: 'Creating account...',
         color: 'info',
       });
-      axios.post('/accounts', this.form)
+      bffAxios.post('/accounts', this.form)
           .then(() => {
             store.commit('showSnackbar', {
               message: 'Account created',
@@ -120,7 +132,7 @@ export default {
           })
           .catch(() => {
             store.commit('showSnackbar', {
-              message: 'Creation failed',
+              message: 'Account creation failed',
               color: 'error',
             });
           });

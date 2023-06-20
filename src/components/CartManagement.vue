@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import axios from '@/services/axios';
+import {bffAxios} from '@/services/axios';
 import {store} from "@/services/store";
 import InfoPayment from "@/components/InfoPayment.vue";
 
@@ -52,7 +52,7 @@ export default {
         message: 'Recovering cart...',
         color: 'info',
       });
-      axios.get('/mycart')
+      bffAxios.get('/mycart')
           .then(response => {
             this.cart = response.data;
             this.isCartLoaded = true;
@@ -77,7 +77,7 @@ export default {
       });
       const newCart = this.cart;
       newCart.menus = this.cart.menus.filter(menu => menu.id !== id);
-      axios.put(`/mycart`, {cart: newCart})
+      bffAxios.put(`/mycart`, {cart: newCart})
           .then(response => {
             this.cart = response.data;
             store.commit('showSnackbar', {

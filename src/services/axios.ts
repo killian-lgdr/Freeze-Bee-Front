@@ -1,66 +1,62 @@
 import axios from 'axios';
-import { store } from '@/services/store';
+import {store} from '@/services/store';
 
-const instance = axios.create({
+export const identityAxios = axios.create({
+    baseURL: 'http://localhost:8000/identity',
+    timeout: 5000,
+});
+export const bffAxios = axios.create({
     baseURL: 'http://localhost:3500/user',
     timeout: 5000,
 });
 
-// Ajoutez un intercepteur de demande
-instance.interceptors.request.use(
-    (config) => {
-        const token = store.state.token;
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+function addAuthorizationHeader(config: any) {
+    const token = store.state.token;
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
-);
+    return config;
+}
 
-// Ajoutez un intercepteur de réponse
-instance.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    async (error) => {
-        const originalRequest = error.config;
-        if (
-            error.response.status === 403 &&
-            !originalRequest._retry &&
-            originalRequest.url !== '/identity/refresh'
-        ) {
-            originalRequest._retry = true;
+identityAxios.interceptors.request.use(addAuthorizationHeader);
+bffAxios.interceptors.request.use(addAuthorizationHeader);
 
-            // Appelez votre endpoint de rafraîchissement du token
-            try {
-                const refreshToken = store.state.refreshToken;
-                const response = await axios.post('/identity/refresh', { "refreshToken": refreshToken });
-                const newToken = response.data.token;
-                const newRefreshToken = response.data.refreshToken;
+async function handleErrorResponse(error: any) {
+    const originalRequest = error.config;
+    if (
+        error.response.status === 403 &&
+        !originalRequest._retry &&
+        originalRequest.url !== '/identity/refresh'
+    ) {
+        originalRequest._retry = true;
 
-                // Mettez à jour le store avec les nouveaux jetons
-                store.commit('setToken', newToken);
-                store.commit('setRefreshToken', newRefreshToken);
+        // Appelez votre endpoint de rafraîchissement du token
+        try {
+            const refreshToken = store.state.refreshToken;
+            const response = await identityAxios.post('/refresh', {"refreshToken": refreshToken});
+            const newToken = response.data.token;
+            const newRefreshToken = response.data.refreshToken;
 
-                // Réessayez la requête avec les nouveaux jetons
-                originalRequest.headers.Authorization = `Bearer ${newToken}`;
-                return axios(originalRequest);
-            } catch (refreshError) {
-                // Gérez les erreurs liées au rafraîchissement du jeton
-                if (typeof refreshError === 'object' && refreshError !== null && 'message' in refreshError) {
-                    console.log((refreshError as { message: string }).message);
-                } else {
-                    console.log('An error occurred while refreshing the token.');
-                }
-                store.commit('clearTokens');
-                return Promise.reject(refreshError);
+            // Mettez à jour le store avec les nouveaux jetons
+            store.commit('setToken', newToken);
+            store.commit('setRefreshToken', newRefreshToken);
+
+            // Réessayez la requête avec les nouveaux jetons
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            return axios(originalRequest);
+        } catch (refreshError) {
+            // Gérez les erreurs liées au rafraîchissement du jeton
+            if (typeof refreshError === 'object' && refreshError !== null && 'message' in refreshError) {
+                console.log((refreshError as { message: string }).message);
+            } else {
+                console.log('An error occurred while refreshing the token.');
             }
+            store.commit('clearTokens');
+            return Promise.reject(refreshError);
         }
-        return Promise.reject(error);
     }
-);
+    return Promise.reject(error);
+}
 
-export default instance;
+identityAxios.interceptors.response.use((response) => response, handleErrorResponse);
+bffAxios.interceptors.response.use((response) => response, handleErrorResponse);

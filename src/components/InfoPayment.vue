@@ -70,7 +70,7 @@
 
 <script>
 import { store } from "@/services/store";
-import axios from "@/services/axios";
+import {bffAxios} from "@/services/axios";
 
 export default {
   props: {
@@ -98,8 +98,7 @@ export default {
         message: "Creating order...",
         color: "info",
       });
-      axios
-          .post("/orders", { cartId: this.cartId }) // Envoyer l'ID du panier dans la requête
+      bffAxios.post("/orders", { cartId: this.cartId }) // Envoyer l'ID du panier dans la requête
           .then(() => {
             store.commit("showSnackbar", {
               message: "Order created",
