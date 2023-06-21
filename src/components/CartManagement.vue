@@ -3,7 +3,8 @@
     <v-row justify="center">
       <v-col cols="12">
         <v-card class="cart-card">
-          <v-card-title class="text-center">Cart</v-card-title>
+          <v-card-title class="text-center">Cart for {{ cart.name }}</v-card-title>
+          <v-card-subtitle>Price: {{ cart.price }}</v-card-subtitle>
           <v-card-text>
             <v-row v-if="cart.length === 0">
               <v-col cols="12">
@@ -27,7 +28,7 @@
       </v-col>
     </v-row>
   </v-container>
-  <InfoPayment v-if="isCartLoaded" :cartId="cart.id" />
+  <InfoPayment v-if="isCartLoaded" :cartId="cart.id"/>
 </template>
 
 <script>
@@ -39,8 +40,18 @@ export default {
   components: {InfoPayment},
   data() {
     return {
-      cart: {menus: []},
-      isCartLoaded: false
+      cart: {
+        name: '',
+        price: '',
+        menus: [
+          {
+            id: '',
+            name: '',
+            description: '',
+          }
+        ]
+      },
+      isCartLoaded: true
     }
   },
   mounted() {
@@ -48,7 +59,7 @@ export default {
   },
   methods: {
     fetchCart() {
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Recovering cart...',
         color: 'info',
       });
@@ -56,14 +67,14 @@ export default {
           .then(response => {
             this.cart = response.data;
             this.isCartLoaded = true;
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Cart recovered',
               color: 'success',
             });
           })
           .catch(error => {
             console.error(error);
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Recover failed',
               color: 'error',
             });
@@ -71,7 +82,7 @@ export default {
     },
     removeFromCart(id) {
       this.isCartLoaded = false;
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Updating menus...',
         color: 'info',
       });
@@ -80,13 +91,13 @@ export default {
       bffAxios.put(`/mycart`, {cart: newCart})
           .then(response => {
             this.cart = response.data;
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Menus updated',
               color: 'success',
             });
           })
           .catch(() => {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Update failed',
               color: 'error',
             });

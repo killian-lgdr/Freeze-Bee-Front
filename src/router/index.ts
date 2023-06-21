@@ -8,7 +8,6 @@ import AccountManagementView from "@/views/AccountManagementView.vue";
 import CartManagementView from "@/views/CartManagementView.vue";
 import InfoMenuView from "@/views/InfoMenuView.vue";
 import OrdersHistoricView from "@/views/OrdersHistoricView.vue";
-import InfoOrderView from "@/views/InfoOrderView.vue";
 
 const routes = [
     {
@@ -55,11 +54,6 @@ const routes = [
         path: '/orders',
         name: 'orders',
         component: OrdersHistoricView
-    },
-    {
-        path: '/orders/:orderId',
-        name: 'order',
-        component: InfoOrderView
     }
 ]
 

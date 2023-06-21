@@ -49,7 +49,7 @@ export default {
   methods: {
     login() {
       const {mail, password} = this;
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Connecting...',
         color: 'info',
       });
@@ -64,19 +64,19 @@ export default {
 
               store.commit('setToken', response.data.token);
               store.commit('setRefreshToken', response.data.refreshToken);
-              store.commit('showSnackbar', {
+              store.commit('showSnackbarinfo', {
                 message: 'Login successful',
                 color: 'success',
               });
             } else {
-              store.commit('showSnackbar', {
+              store.commit('showSnackbarinfo', {
                 message: 'Login failed',
                 color: 'error',
               });
             }
           })
           .catch(function () {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Login failed',
               color: 'error',
             });

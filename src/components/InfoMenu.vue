@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     fetchMenus() {
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Recovering menu...',
         color: 'info',
       });
@@ -52,21 +52,21 @@ export default {
           .then(response => {
             this.menu = response.data;
             this.isMenuLoaded = true;
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Menu recovered',
               color: 'success',
             });
           })
           .catch(error => {
             console.error(error);
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Error while recovering menu',
               color: 'error',
             });
           });
     },
     addToCart(menu) {
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Recover and update Cart...',
         color: 'info',
       });
@@ -75,20 +75,20 @@ export default {
             const cart =response.data
             cart.menus = cart.menus.map(item => item.id);
             cart.menus = [...cart.menus, menu.id];
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Cart recovered',
               color: 'success',
             });
             bffAxios.put('/mycart', cart)
                 .then(() => {
-                  store.commit('showSnackbar', {
+                  store.commit('showSnackbarinfo', {
                     message: 'Cart updated',
                     color: 'success',
                   });
                 })
                 .catch(error => {
                   console.error(error);
-                  store.commit('showSnackbar', {
+                  store.commit('showSnackbarinfo', {
                     message: 'Recover failed',
                     color: 'error',
                   });
@@ -96,7 +96,7 @@ export default {
           })
           .catch(error => {
             console.error(error);
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Recover failed',
               color: 'error',
             });

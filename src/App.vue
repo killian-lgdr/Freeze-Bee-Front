@@ -99,7 +99,7 @@ export default {
     const socket = io("http://localhost:3000");
 
     socket.on("", () => {
-      //faire l'aafichage de la notification
+      //faire l'affichage de la notification
     });
 
     const logout = () => {
