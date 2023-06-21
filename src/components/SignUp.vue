@@ -108,12 +108,45 @@ export default {
               message: 'Identity created',
               color: 'success',
             });
-            this.createAccount()
+            this.login();
           })
           .catch(function (error) {
             console.log(error.message);
             store.commit('showSnackbar', {
               message: 'Identity creation failed',
+              color: 'error',
+            });
+          });
+    },
+    login() {
+      const {mail, password} = this.credentials;
+      store.commit('showSnackbar', {
+        message: 'Connecting...',
+        color: 'info',
+      });
+      identityAxios.post('/login', {
+        mail: mail,
+        password: password,
+      })
+          .then(function (response) {
+            if (response.data.token !== "") {
+              store.commit('setToken', response.data.token);
+              store.commit('setRefreshToken', response.data.refreshToken);
+              store.commit('showSnackbar', {
+                message: 'Login successful',
+                color: 'success',
+              });
+              this.createAccount();
+            } else {
+              store.commit('showSnackbar', {
+                message: 'Login failed',
+                color: 'error',
+              });
+            }
+          })
+          .catch(function () {
+            store.commit('showSnackbar', {
+              message: 'Login failed',
               color: 'error',
             });
           });
