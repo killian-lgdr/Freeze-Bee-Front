@@ -4,9 +4,16 @@ import {createStore, Store, useStore as baseUseStore} from 'vuex';
 export interface State {
     token: string | null;
     refreshToken: string | null;
-    snackbar: {
+    snackbarinfo: {
         show: boolean;
         message: string;
+        color: string;
+        timeout: number;
+        top: boolean;
+    };
+    snackbarorder: {
+        show: boolean;
+        message: {id: string, status: string};
         color: string;
         timeout: number;
         top: boolean;
@@ -20,11 +27,18 @@ export const store = createStore<State>({
     state: {
         token: null,
         refreshToken: null,
-        snackbar: {
+        snackbarinfo: {
             show: false,
             message: '',
             color: '',
             timeout: 3000,
+            top: false
+        },
+        snackbarorder: {
+            show: false,
+            message: {id:'', status: ''},
+            color: '',
+            timeout: 60000,
             top: false
         },
     },
@@ -44,12 +58,19 @@ export const store = createStore<State>({
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
         },
-        showSnackbar(state, { message, color = 'success', timeout = 3000, top = false,onClick = true }) {
-            state.snackbar.message = message;
-            state.snackbar.color = color;
-            state.snackbar.timeout = timeout;
-            state.snackbar.top = top;
-            state.snackbar.show = true;
+        showSnackbarinfo(state, { message, color = 'success', timeout = 3000, top = false}) {
+            state.snackbarinfo.message = message;
+            state.snackbarinfo.color = color;
+            state.snackbarinfo.timeout = timeout;
+            state.snackbarinfo.top = top;
+            state.snackbarinfo.show = true;
+        },
+        showSnackbarorder(state, { message, color = 'success', timeout = 3000, top = false}) {
+            state.snackbarorder.message = message;
+            state.snackbarorder.color = color;
+            state.snackbarorder.timeout = timeout;
+            state.snackbarorder.top = top;
+            state.snackbarorder.show = true;
         },
     },
 

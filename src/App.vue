@@ -32,16 +32,38 @@
     </v-container>
 
     <v-bottom-navigation v-if="isMobile" color="primary" :elevation="0" grow>
-      <v-btn v-if="isAuthenticated" to="/catalogs"><v-icon>mdi-silverware-fork-knife</v-icon></v-btn>
-      <v-btn v-if="isAuthenticated" to="/cart"><v-icon>mdi-cart-variant</v-icon></v-btn>
-      <v-btn v-if="isAuthenticated" to="/orders"><v-icon>mdi-book-clock-outline</v-icon></v-btn>
-      <v-btn v-if="isAuthenticated" to="/account"><v-icon>mdi-account</v-icon></v-btn>
-      <v-btn v-if="isAuthenticated" to="/" @click="logout()"><v-icon>mdi-logout</v-icon></v-btn>
-      <v-btn v-if="!isAuthenticated" to="/login"><v-icon>mdi-login</v-icon></v-btn>
+      <v-btn v-if="isAuthenticated" to="/catalogs">
+        <v-icon>mdi-silverware-fork-knife</v-icon>
+      </v-btn>
+      <v-btn v-if="isAuthenticated" to="/cart">
+        <v-icon>mdi-cart-variant</v-icon>
+      </v-btn>
+      <v-btn v-if="isAuthenticated" to="/orders">
+        <v-icon>mdi-book-clock-outline</v-icon>
+      </v-btn>
+      <v-btn v-if="isAuthenticated" to="/account">
+        <v-icon>mdi-account</v-icon>
+      </v-btn>
+      <v-btn v-if="isAuthenticated" to="/" @click="logout()">
+        <v-icon>mdi-logout</v-icon>
+      </v-btn>
+      <v-btn v-if="!isAuthenticated" to="/login">
+        <v-icon>mdi-login</v-icon>
+      </v-btn>
     </v-bottom-navigation>
 
-    <v-snackbar v-model="snackbar.show" :color="snackbar.color" :timeout="snackbar.timeout" :top="snackbar.top" :close-on-content-click=true location="top">
-      {{ snackbar.message }}
+    <v-snackbar v-model="snackbarinfo.show" :color="snackbarinfo.color" :timeout="snackbarinfo.timeout"
+                :top="snackbarinfo.top" :close-on-content-click=true location="top">
+      {{ snackbarinfo.message }}
+    </v-snackbar>
+    <v-snackbar v-model="snackbarorder.show" :color="snackbarorder.color" :timeout="snackbarorder.timeout"
+                :top="snackbarorder.top" :close-on-content-click=true location="center">
+      The order has been {{ snackbarorder.message.status }}
+      <template v-slot:actions>
+        <v-btn color="primary" variant="text" @click="snackbarinfo.show = false" to="{{ snackbarorder.message.id }}">
+          Go to
+        </v-btn>
+      </template>
     </v-snackbar>
   </v-app>
 </template>
@@ -49,9 +71,7 @@
 <script>
 import {computed} from 'vue';
 import {useStore} from '@/services/store';
-//import {useRouter} from 'vue-router';
-import axios from "@/services/axios";
-import {store} from '@/services/store';
+import { io } from "socket.io-client";
 
 export default {
   name: 'App',
@@ -60,51 +80,40 @@ export default {
       isMobile: false, // Ajoutez cette propriété
     };
   },
-  created() {
-    this.checkAccountStatus();
-  },
   mounted() {
     this.checkScreenWidth();
     window.addEventListener('resize', this.checkScreenWidth);
   },
   methods: {
     checkScreenWidth() {
-      this.isMobile = window.innerWidth <= 600; // Définissez la valeur appropriée pour le format téléphone
+      this.isMobile = window.innerWidth <= 600;
     },
-    checkAccountStatus() {
-      // Vérifier l'état du compte uniquement si les tokens existent
-      if (store.getters.isAuthenticated) {
-        axios.get('/myaccount')
-            .then(() => {
-              // Account exists, user can access the application
-            })
-            .catch(() => {
-              //const router = useRouter();
-              // Account does not exist, redirect the user to the create account page
-              //router.push('createaccount');
-              // or
-              this.$emit('account-not-created'); // Emit a custom event to display an error message
-            });
-      }
-    }
   },
   setup() {
     const store = useStore();
 
     const isAuthenticated = computed(() => store.getters.isAuthenticated);
-    const snackbar = computed(() => store.state.snackbar);
+    const snackbarinfo = computed(() => store.state.snackbarinfo);
+    const snackbarorder = computed(() => store.state.snackbarorder);
+
+    const socket = io("http://localhost:3000");
+
+    socket.on("", () => {
+      //faire l'aafichage de la notification
+    });
 
     const logout = () => {
       store.commit('clearTokens');
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Log out successful',
         color: 'success',
       });
     };
 
     return {
-      snackbar,
       isAuthenticated,
+      snackbarinfo,
+      snackbarorder,
       logout
     }
   },
