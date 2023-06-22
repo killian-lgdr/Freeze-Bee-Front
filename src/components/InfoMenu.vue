@@ -32,14 +32,14 @@ import {store} from "@/services/store";
 export default {
   data() {
     return {
-      id:'',
+      id: '',
       menu: {
-        id:'',
+        id: '',
         image: '',
         name: '',
         description: '',
         price: '',
-        articles:[
+        articles: [
           {
             id: '',
             image: '',
@@ -54,10 +54,10 @@ export default {
   },
 
   mounted() {
-    this.fetchMenus();
+    this.fetchMenu();
   },
   methods: {
-    fetchMenus() {
+    fetchMenu() {
       store.commit('showSnackbarinfo', {
         message: 'Recovering menu...',
         color: 'info',
@@ -81,37 +81,20 @@ export default {
     },
     addToCart(menu) {
       store.commit('showSnackbarinfo', {
-        message: 'Recover and update Cart...',
+        message: 'Update Cart...',
         color: 'info',
       });
-      bffAxios.get('/mycart')
-          .then(response => {
-            const cart =response.data
-            cart.menus = cart.menus.map(item => item.id);
-            cart.menus = [...cart.menus, menu.id];
+      bffAxios.put('/mycart', {id: menu.id})
+          .then(() => {
             store.commit('showSnackbarinfo', {
-              message: 'Cart recovered',
+              message: 'Cart updated',
               color: 'success',
             });
-            bffAxios.put('/mycart', cart)
-                .then(() => {
-                  store.commit('showSnackbarinfo', {
-                    message: 'Cart updated',
-                    color: 'success',
-                  });
-                })
-                .catch(error => {
-                  console.error(error);
-                  store.commit('showSnackbarinfo', {
-                    message: 'Recover failed',
-                    color: 'error',
-                  });
-                });
           })
           .catch(error => {
             console.error(error);
             store.commit('showSnackbarinfo', {
-              message: 'Recover failed',
+              message: 'Update failed',
               color: 'error',
             });
           });
