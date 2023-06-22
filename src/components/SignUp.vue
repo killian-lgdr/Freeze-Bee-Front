@@ -125,6 +125,9 @@ export default {
       })
           .then(function (response) {
             if (response.data.token !== "") {
+
+              this.socket.emit("connection") // Connect to topic wanted
+
               store.commit('setToken', response.data.token);
               store.commit('setRefreshToken', response.data.refreshToken);
               store.commit('showSnackbarinfo', {

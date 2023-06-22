@@ -60,7 +60,7 @@
                 :top="snackbarorder.top" :close-on-content-click=true location="center">
       The order has been {{ snackbarorder.message.status }}
       <template v-slot:actions>
-        <v-btn color="primary" variant="text" @click="snackbarinfo.show = false" to="{{ snackbarorder.message.id }}">
+        <v-btn color="primary" variant="text" @click="snackbarinfo.show = false" to="/orders">
           Go to
         </v-btn>
       </template>
