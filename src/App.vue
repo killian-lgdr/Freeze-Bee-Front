@@ -71,7 +71,7 @@
 <script>
 import {computed} from 'vue';
 import {useStore} from '@/services/store';
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 
 export default {
   name: 'App',
@@ -98,11 +98,54 @@ export default {
 
     const socket = io("http://localhost:3000");
 
-    socket.on("", () => {
-      //faire l'affichage de la notification
+    socket.on("assigned", () => {
+      store.commit('showSnackbarorder', {
+        message: {
+          id: '',
+          status: 'assigned'
+        },
+        color: 'info',
+      });
+    });
+    socket.on("cooked", () => {
+      store.commit('showSnackbarorder', {
+        message: {
+          id: '',
+          status: 'cooked'
+        },
+        color: 'info',
+      });
+    });
+    socket.on("recovered", () => {
+      store.commit('showSnackbarorder', {
+        message: {
+          id: '',
+          status: 'recovered'
+        },
+        color: 'info',
+      });
+    });
+    socket.on("arrived", () => {
+      store.commit('showSnackbarorder', {
+        message: {
+          id: '',
+          status: 'arrived'
+        },
+        color: 'info',
+      });
+    });
+    socket.on("delivered", () => {
+      store.commit('showSnackbarorder', {
+        message: {
+          id: '',
+          status: 'delivered'
+        },
+        color: 'info',
+      });
     });
 
     const logout = () => {
+      this.socket.emit("disconnect")
       store.commit('clearTokens');
       store.commit('showSnackbarinfo', {
         message: 'Log out successful',
