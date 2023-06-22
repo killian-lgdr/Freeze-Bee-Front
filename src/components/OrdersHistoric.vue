@@ -6,12 +6,13 @@
   </v-row>
   <v-row>
     <v-col cols="12" v-for="order in orders" :key="order.id">
-      <v-card>
-        <v-card-title class="test-center">{{ order.restorer.name }}</v-card-title>
+      <v-card class="text-center">
+        <v-card-title>{{ order.restorer.name }}</v-card-title>
+        <v-card-subtitle>For {{order.user.name}}</v-card-subtitle>
         <v-card-text>
           <v-row>
-            <v-col cols="6">{{ order.status }}</v-col>
-            <v-col cols="6">{{ order.date }}</v-col>
+            <v-col cols="6"><v-chip color="primary">{{ order.status }}</v-chip></v-col>
+            <v-col cols="6"><v-chip color="primary">{{ order.date }}</v-chip></v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
@@ -28,13 +29,12 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12" v-for="menu in order.menus" :key="menu.id">
+          <v-row justify-sm="center">
+            <v-col xxl="3" xl="3" lg="3" md="3" sm="6" xs="6" v-for="menu in order.menus" :key="menu.id">
               <v-card>
                 <v-img
                     :src="menu.image"
                     height="200px"
-                    cover
                 ></v-img>
                 <v-card-title>{{ menu.name }}</v-card-title>
               </v-card>
@@ -58,25 +58,33 @@ export default {
     return {
       orders: [
         {
-          name: '',
           status: '',
           date: '',
           amount: '',
           restorer:{
             id: '',
+            name: '',
             address: ''
           },
           user:{
             id: '',
+            name: '',
             address: ''
           },
           menus:[
             {
               id: '',
+              image: '',
+              name: ''
+            },
+            {
+              id: '',
+              image: '',
               name: ''
             }
           ]
-        }
+        },
+
       ],
       isOrdersLoaded: true
     }

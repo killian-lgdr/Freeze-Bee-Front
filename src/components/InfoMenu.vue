@@ -18,7 +18,7 @@
         </v-row>
         <v-card-actions class="justify-center">
           <v-btn color="secondary" @click="addToCart(menu)">Add to cart</v-btn>
-          <v-btn color="error" :to="`/catalogs/${this.catalogId}`">Back</v-btn>
+          <v-btn color="error" :to="`/catalogs/${id}`">Back</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -32,14 +32,28 @@ import {store} from "@/services/store";
 export default {
   data() {
     return {
-      menu: {},
+      id:'',
+      menu: {
+        id:'',
+        image: '',
+        name: '',
+        description: '',
+        price: '',
+        articles:[
+          {
+            id: '',
+            image: '',
+            name: '',
+            description: '',
+            price: ''
+          }
+        ]
+      },
       isMenuLoaded: false
     };
   },
 
   mounted() {
-    this.catalogId = this.$route.params.catalogId;
-    this.menuId = this.$route.params.menuId;
     this.fetchMenus();
   },
   methods: {
@@ -48,7 +62,7 @@ export default {
         message: 'Recovering menu...',
         color: 'info',
       });
-      bffAxios.get(`/catalogs/${this.catalogId}/menus/${this.menuId}`)
+      bffAxios.get(`/catalogs/${this.params.catalogId}/menus/${this.params.menuId}`)
           .then(response => {
             this.menu = response.data;
             this.isMenuLoaded = true;

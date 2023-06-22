@@ -29,7 +29,14 @@ import {store} from "@/services/store";
 export default {
   data() {
     return {
-      catalogs: [],
+      catalogs: [
+        {
+          id: '',
+          image: '',
+          name: '',
+          description: ''
+        }
+      ],
     };
   },
   mounted() {

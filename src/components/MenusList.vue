@@ -40,27 +40,46 @@
 
 <script>
 import {bffAxios} from '@/services/axios';
-import { store } from '@/services/store';
+import {store} from '@/services/store';
 
 export default {
   data() {
     return {
-      catalog: {},
+      catalog: {
+        id: '',
+        image: '',
+        name: '',
+        description: '',
+        menus: [
+          {
+            id: '',
+            image: '',
+            name: '',
+            description: '',
+            price: '',
+            articles: [
+              {
+                id: '',
+                name: '',
+              }
+            ]
+          }
+        ],
+      },
       isCatalogLoaded: false
     };
   },
-
   mounted() {
-    this.catalogId = this.$route.params.catalogId;
     this.fetchMenus();
-  },
+  }
+  ,
   methods: {
     fetchMenus() {
       store.commit('showSnackbarinfo', {
         message: 'Recovering menus...',
         color: 'info',
       });
-      bffAxios.get(`/catalogs/${this.catalogId}`)
+      bffAxios.get(`/catalogs/${this.param.catalogId}`)
           .then(response => {
             this.catalog = response.data;
             this.isCatalogLoaded = true;
@@ -76,7 +95,8 @@ export default {
               color: 'error',
             });
           });
-    },
+    }
+    ,
     addToCart(menu) {
       store.commit('showSnackbarinfo', {
         message: 'Recover and update Cart...',
@@ -84,7 +104,7 @@ export default {
       });
       bffAxios.get('/mycart')
           .then(response => {
-            const cart =response.data
+            const cart = response.data
             cart.menus = cart.menus.map(item => item.id);
             cart.menus = [...cart.menus, menu.id];
             store.commit('showSnackbarinfo', {
@@ -113,7 +133,9 @@ export default {
               color: 'error',
             });
           });
-    },
-  },
+    }
+    ,
+  }
+  ,
 };
 </script>

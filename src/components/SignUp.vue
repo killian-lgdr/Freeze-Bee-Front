@@ -65,7 +65,7 @@ export default {
       credentials: {
         mail: "",
         password: "",
-        type: ""
+        type: "user"
       },
       form: {
         firstName: '',
@@ -92,16 +92,11 @@ export default {
   },
   methods: {
     register() {
-      const {mail, password} = this.credentials;
       store.commit('showSnackbarinfo', {
         message: 'Creating identity...',
         color: 'info',
       });
-      identityAxios.post('/register', {
-        mail: mail,
-        password: password,
-        type: "user"
-      })
+      identityAxios.post('/register', this.credentials)
           .then(function (response) {
             console.log(response);
             store.commit('showSnackbarinfo', {
