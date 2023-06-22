@@ -16,7 +16,7 @@
                 </v-col>
               </v-row>
 
-              <template v-if="selectedPayment === 'Carte Bancaire'">
+              <template v-if="selectedPayment === 'Bank card'">
                 <v-row>
                   <v-col cols="12">
                     <v-text-field v-model="cardNumber" label="Card Number"></v-text-field>
@@ -81,8 +81,8 @@ export default {
   },
   data() {
     return {
-      selectedPayment: 'Carte Bancaire',
-      paymentOptions: ['Carte Bancaire', 'PayPal', 'Western Union'],
+      selectedPayment: 'Bank card',
+      paymentOptions: ['Bank card', 'PayPal', 'Western Union'],
       cardNumber: '',
       cardholderName: '',
       expirationDate: '',
@@ -98,7 +98,7 @@ export default {
         message: "Creating order...",
         color: "info",
       });
-      bffAxios.post("/orders", { cartId: this.cartId }) // Envoyer l'ID du panier dans la requête
+      bffAxios.post("/orders", { mode: this.selectedPayment }) // Envoyer l'ID du panier dans la requête
           .then(() => {
             store.commit("showSnackbar", {
               message: "Order created",

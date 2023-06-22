@@ -5,9 +5,9 @@
         <v-card-title class="text-center">Sign In</v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field v-model="mail" :rules="[rules.required, rules.email]" label="Email"></v-text-field>
+            <v-text-field v-model="credentials.mail" :rules="[rules.required, rules.email]" label="Email"></v-text-field>
             <v-text-field
-                v-model="password"
+                v-model="credentials.password"
                 :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[rules.required, rules.min]"
                 :type="show1 ? 'text' : 'password'"
@@ -34,8 +34,10 @@ export default {
   data() {
     return {
       show1: false,
-      mail: "",
-      password: "",
+      credentials: {
+        mail: '',
+        password: '',
+      },
       rules: {
         required: value => !!value || 'Required.',
         min: value => (value && value.length >= 6) || 'Password must be at least 6 characters long.',
@@ -48,15 +50,11 @@ export default {
   },
   methods: {
     login() {
-      const {mail, password} = this;
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Connecting...',
         color: 'info',
       });
-      identityAxios.post('/login', {
-            mail: mail,
-            password: password,
-          })
+      identityAxios.post('/login', this.credentials)
           .then(function (response) {
             if (response.data.token !== "") {
 
@@ -64,19 +62,19 @@ export default {
 
               store.commit('setToken', response.data.token);
               store.commit('setRefreshToken', response.data.refreshToken);
-              store.commit('showSnackbar', {
+              store.commit('showSnackbarinfo', {
                 message: 'Login successful',
                 color: 'success',
               });
             } else {
-              store.commit('showSnackbar', {
+              store.commit('showSnackbarinfo', {
                 message: 'Login failed',
                 color: 'error',
               });
             }
           })
           .catch(function () {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Login failed',
               color: 'error',
             });

@@ -65,7 +65,7 @@ export default {
       credentials: {
         mail: "",
         password: "",
-        type: ""
+        type: "user"
       },
       form: {
         firstName: '',
@@ -92,19 +92,14 @@ export default {
   },
   methods: {
     register() {
-      const {mail, password} = this.credentials;
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Creating identity...',
         color: 'info',
       });
-      identityAxios.post('/register', {
-        mail: mail,
-        password: password,
-        type: "user"
-      })
+      identityAxios.post('/register', this.credentials)
           .then(function (response) {
             console.log(response);
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Identity created',
               color: 'success',
             });
@@ -112,7 +107,7 @@ export default {
           })
           .catch(function (error) {
             console.log(error.message);
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Identity creation failed',
               color: 'error',
             });
@@ -120,7 +115,7 @@ export default {
     },
     login() {
       const {mail, password} = this.credentials;
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Connecting...',
         color: 'info',
       });
@@ -132,39 +127,39 @@ export default {
             if (response.data.token !== "") {
               store.commit('setToken', response.data.token);
               store.commit('setRefreshToken', response.data.refreshToken);
-              store.commit('showSnackbar', {
+              store.commit('showSnackbarinfo', {
                 message: 'Login successful',
                 color: 'success',
               });
               this.createAccount();
             } else {
-              store.commit('showSnackbar', {
+              store.commit('showSnackbarinfo', {
                 message: 'Login failed',
                 color: 'error',
               });
             }
           })
           .catch(function () {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Login failed',
               color: 'error',
             });
           });
     },
     createAccount() {
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Creating account...',
         color: 'info',
       });
       bffAxios.post('/accounts', this.form)
           .then(() => {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Account created',
               color: 'success',
             });
           })
           .catch(() => {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Account creation failed',
               color: 'error',
             });

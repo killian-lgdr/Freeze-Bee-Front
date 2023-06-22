@@ -29,7 +29,14 @@ import {store} from "@/services/store";
 export default {
   data() {
     return {
-      catalogs: [],
+      catalogs: [
+        {
+          id: '',
+          image: '',
+          name: '',
+          description: ''
+        }
+      ],
     };
   },
   mounted() {
@@ -37,21 +44,21 @@ export default {
   },
   methods: {
     fetchCatalogs() {
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Recovering catalogs...',
         color: 'info',
       });
       bffAxios.get('/catalogs')
           .then(response => {
             this.catalogs = response.data;
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Catalogs recovered',
               color: 'success',
             });
           })
           .catch(error => {
             console.error(error);
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Recover failed',
               color: 'error',
             });

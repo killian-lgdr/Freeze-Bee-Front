@@ -52,59 +52,59 @@ export default {
   },
   methods: {
     fetchAccount() {
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Recovering account...',
         color: 'info',
       });
       bffAxios.get('/myaccount')
           .then(response => {
             this.form = response.data;
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Account recovered',
               color: 'success',
             });
           })
           .catch(error => {
             console.error(error);
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Error while recovering account',
               color: 'error',
             });
           });
     },
     updateAccount() {
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Updating account...',
         color: 'info',
       });
       bffAxios.put('/myaccount', this.form)
           .then(() => {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Account updated',
               color: 'success',
             });
           })
           .catch(() => {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Update failed',
               color: 'error',
             });
           });
     },
     deleteAccount() {
-      store.commit('showSnackbar', {
+      store.commit('showSnackbarinfo', {
         message: 'Deleting account...',
         color: 'info',
       });
       bffAxios.delete('/accounts')
           .then(() => {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'Account deleted',
               color: 'success',
             });
           })
           .catch(() => {
-            store.commit('showSnackbar', {
+            store.commit('showSnackbarinfo', {
               message: 'delete failed',
               color: 'error',
             });
