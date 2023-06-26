@@ -98,7 +98,7 @@ export default {
 
     const socket = io(process.env.WEBSOCKET_URL);
 
-    socket.on("cooked", () => {
+    socket.on("order.cooked", () => {
       store.commit('showSnackbarorder', {
         message: {
           id: '',
@@ -107,7 +107,7 @@ export default {
         color: 'info',
       });
     });
-    socket.on("delivered", () => {
+    socket.on("order.delivered", () => {
       store.commit('showSnackbarorder', {
         message: {
           id: '',
