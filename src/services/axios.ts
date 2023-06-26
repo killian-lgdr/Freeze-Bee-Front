@@ -2,11 +2,11 @@ import axios from 'axios';
 import {store} from '@/services/store';
 
 export const identityAxios = axios.create({
-    baseURL: 'http://localhost:8000/identity',
+    baseURL: process.env.IDENTITY_URL,
     timeout: 5000,
 });
 export const bffAxios = axios.create({
-    baseURL: 'http://localhost:3500/user',
+    baseURL: process.env.BFF_URL,
     timeout: 5000,
 });
 

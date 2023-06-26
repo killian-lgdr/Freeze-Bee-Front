@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card class="cart-card">
           <v-card-title class="text-center">Cart for {{ cart.name }}</v-card-title>
-          <v-card-subtitle>Price: {{ cart.price }}</v-card-subtitle>
+          <v-card-subtitle>Amount: {{ cart.amount }}</v-card-subtitle>
           <v-card-text>
             <v-row v-if="cart.length === 0">
               <v-col cols="12">
@@ -18,7 +18,7 @@
                   <v-card-title class="text-center">{{ menu.name }}</v-card-title>
                   <v-card-subtitle>{{ menu.description }}</v-card-subtitle>
                   <v-card-actions class="justify-center">
-                    <v-btn color="error" @click="removeFromCart(menu.id)" :to="`/cart`">Remove</v-btn>
+                    <v-btn color="error" @click="removeFromCart(menu)" :to="`/cart`">Remove</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -42,12 +42,13 @@ export default {
     return {
       cart: {
         name: '',
-        price: '',
+        amount: '',
         menus: [
           {
             id: '',
             name: '',
             description: '',
+            amount: '',
           }
         ]
       },
@@ -80,15 +81,15 @@ export default {
             });
           });
     },
-    removeFromCart(id) {
+    removeFromCart(selectedMenu) {
       this.isCartLoaded = false;
       store.commit('showSnackbarinfo', {
         message: 'Updating menus...',
         color: 'info',
       });
       const newCart = this.cart;
-      newCart.menus = this.cart.menus.filter(menu => menu.id !== id);
-      bffAxios.put(`/mycart`, {cart: newCart})
+      newCart.menus = this.cart.menus.filter(menu => menu.id !== selectedMenu.id);
+      bffAxios.put(`/removetomycart`, {menu: {id: selectedMenu.id, amount: selectedMenu.amount}})
           .then(response => {
             this.cart = response.data;
             store.commit('showSnackbarinfo', {

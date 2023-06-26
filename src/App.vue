@@ -96,40 +96,13 @@ export default {
     const snackbarinfo = computed(() => store.state.snackbarinfo);
     const snackbarorder = computed(() => store.state.snackbarorder);
 
-    const socket = io("http://localhost:3000");
+    const socket = io(process.env.WEBSOCKET_URL);
 
-    socket.on("assigned", () => {
-      store.commit('showSnackbarorder', {
-        message: {
-          id: '',
-          status: 'assigned'
-        },
-        color: 'info',
-      });
-    });
     socket.on("cooked", () => {
       store.commit('showSnackbarorder', {
         message: {
           id: '',
           status: 'cooked'
-        },
-        color: 'info',
-      });
-    });
-    socket.on("recovered", () => {
-      store.commit('showSnackbarorder', {
-        message: {
-          id: '',
-          status: 'recovered'
-        },
-        color: 'info',
-      });
-    });
-    socket.on("arrived", () => {
-      store.commit('showSnackbarorder', {
-        message: {
-          id: '',
-          status: 'arrived'
         },
         color: 'info',
       });
@@ -145,7 +118,7 @@ export default {
     });
 
     const logout = () => {
-      this.socket.emit("disconnect")
+      this.socket.disconnect();
       store.commit('clearTokens');
       store.commit('showSnackbarinfo', {
         message: 'Log out successful',
