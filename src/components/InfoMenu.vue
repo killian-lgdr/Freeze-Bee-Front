@@ -5,14 +5,14 @@
         <v-img :src="menu.image" height="200px" cover></v-img>
         <v-card-title class="text-center">{{ menu.name }}</v-card-title>
         <v-card-subtitle>{{ menu.description }}</v-card-subtitle>
-        <v-card-text>💰{{ menu.price }}</v-card-text>
+        <v-card-text>💰{{ menu.amount }}</v-card-text>
         <v-row>
           <v-col v-for="article in menu.articles" :key="article.id" cols="12" sm="6" md="4" lg="3">
             <v-card>
               <v-img :src="article.image" height="200px" cover></v-img>
               <v-card-title class="text-center">{{ article.name }}</v-card-title>
               <v-card-subtitle>{{ article.description }}</v-card-subtitle>
-              <v-card-text>💰{{ article.price }}</v-card-text>
+              <v-card-text>💰{{ article.amount }}</v-card-text>
             </v-card>
           </v-col>
         </v-row>
@@ -38,14 +38,14 @@ export default {
         image: '',
         name: '',
         description: '',
-        price: '',
+        amount: '',
         articles: [
           {
             id: '',
             image: '',
             name: '',
             description: '',
-            price: ''
+            amount: ''
           }
         ]
       },
@@ -84,7 +84,7 @@ export default {
         message: 'Update Cart...',
         color: 'info',
       });
-      bffAxios.put('/mycart', {id: menu.id})
+      bffAxios.put('/addtomycart', {menu: {id: menu.id, amount: menu.amount}})
           .then(() => {
             store.commit('showSnackbarinfo', {
               message: 'Cart updated',

@@ -41,7 +41,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">Price: {{ order.amount }}</v-col>
+            <v-col cols="12">amount: {{ order.amount }}</v-col>
           </v-row>
         </v-card-text>
       </v-card>
@@ -98,7 +98,7 @@ export default {
         message: 'Recovering orders...',
         color: 'info',
       });
-      bffAxios.get('/mycart')
+      bffAxios.get('/myorders')
           .then(response => {
             this.orders = response.data;
             this.isCartLoaded = true;

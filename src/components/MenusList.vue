@@ -19,7 +19,7 @@
               ></v-img>
               <v-card-title class="text-center">{{ menu.name }}</v-card-title>
               <v-card-subtitle>{{ menu.description }}</v-card-subtitle>
-              <v-card-text>💰{{ menu.price }}</v-card-text>
+              <v-card-text>💰{{ menu.amount }}</v-card-text>
               <v-card-text class="text-center">
                 <span v-for="article in menu.articles" :key="article.id">{{ article.name }}<br/></span>
               </v-card-text>
@@ -56,7 +56,7 @@ export default {
             image: '',
             name: '',
             description: '',
-            price: '',
+            amount: '',
             articles: [
               {
                 id: '',
@@ -101,7 +101,7 @@ export default {
         message: 'Update Cart...',
         color: 'info',
       });
-      bffAxios.put('/mycart', {id: menu.id})
+      bffAxios.put('/addtomycart', {menu: {id: menu.id, amount: menu.amount}})
           .then(() => {
             store.commit('showSnackbarinfo', {
               message: 'Cart updated',
