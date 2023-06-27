@@ -5,7 +5,8 @@
         <v-card-title class="text-center">Sign In</v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field v-model="credentials.mail" :rules="[rules.required, rules.email]" label="Email"></v-text-field>
+            <v-text-field v-model="credentials.mail" :rules="[rules.required, rules.email]"
+                          label="Email"></v-text-field>
             <v-text-field
                 v-model="credentials.password"
                 :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -14,7 +15,7 @@
                 label="Password"
                 @click:append-inner="show1 = !show1"
             ></v-text-field>
-            <v-btn color="primary" to="/catalogs" @click="login">Sign In</v-btn>
+            <v-btn color="primary" to="/" @click="login">Sign In</v-btn>
           </v-form>
         </v-card-text>
         <v-card-actions class="justify-center">
@@ -29,7 +30,8 @@
 
 <script>
 import {identityAxios} from "@/services/axios";
-import { store } from '@/services/store';
+import {store} from '@/services/store';
+
 export default {
   data() {
     return {
@@ -56,22 +58,15 @@ export default {
       });
       identityAxios.post('/login', this.credentials)
           .then(function (response) {
-            if (response.data.token !== "") {
-
-              this.socket.connect();
-              this.socket.emit('setClientId',response.data.token);
-              store.commit('setToken', response.data.token);
-              store.commit('setRefreshToken', response.data.refreshToken);
-              store.commit('showSnackbarinfo', {
-                message: 'Login successful',
-                color: 'success',
-              });
-            } else {
-              store.commit('showSnackbarinfo', {
-                message: 'Login failed',
-                color: 'error',
-              });
-            }
+            console.log('token received : '+ response.data.token)
+            //this.socket.connect();
+            //this.socket.emit('setClientId', response.data.token);
+            store.commit('setToken', response.data.token);
+            store.commit('setRefreshToken', response.data.refreshToken);
+            store.commit('showSnackbarinfo', {
+              message: 'Login successful',
+              color: 'success',
+            });
           })
           .catch(function () {
             store.commit('showSnackbarinfo', {

@@ -2,11 +2,11 @@ import axios from 'axios';
 import {store} from '@/services/store';
 
 export const identityAxios = axios.create({
-    baseURL: process.env.IDENTITY_URL,
+    baseURL: process.env.VUE_APP_IDENTITY_URL,
     timeout: 5000,
 });
 export const bffAxios = axios.create({
-    baseURL: process.env.BFF_URL,
+    baseURL: process.env.VUE_APP_BFF_URL,
     timeout: 5000,
 });
 

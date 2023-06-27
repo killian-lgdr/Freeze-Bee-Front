@@ -8,7 +8,8 @@
               <v-card-title class="text-center">Sign Up</v-card-title>
               <v-card-text>
                 <v-form>
-                  <v-text-field v-model="credentials.mail" :rules="[rules.required, rules.email]" label="Email"></v-text-field>
+                  <v-text-field v-model="credentials.mail" :rules="[rules.required, rules.email]"
+                                label="Email"></v-text-field>
                   <v-text-field
                       v-model="credentials.password"
                       :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -96,16 +97,18 @@ export default {
         message: 'Creating identity...',
         color: 'info',
       });
-      identityAxios.post('/register', this.credentials)
-          .then(function (response) {
+
+      identityAxios
+          .post('/register', this.credentials)
+          .then((response) => {
             console.log(response);
             store.commit('showSnackbarinfo', {
               message: 'Identity created',
               color: 'success',
             });
-            this.login();
+            this.login(); // Utilisation de la fonction fléchée
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error.message);
             store.commit('showSnackbarinfo', {
               message: 'Identity creation failed',
@@ -124,23 +127,15 @@ export default {
         password: password,
       })
           .then(function (response) {
-            if (response.data.token !== "") {
-
-              this.socket.connect();
-              this.socket.emit('setClientId',response.data.token);
-              store.commit('setToken', response.data.token);
-              store.commit('setRefreshToken', response.data.refreshToken);
-              store.commit('showSnackbarinfo', {
-                message: 'Login successful',
-                color: 'success',
-              });
-              this.createAccount();
-            } else {
-              store.commit('showSnackbarinfo', {
-                message: 'Login failed',
-                color: 'error',
-              });
-            }
+            this.socket.connect();
+            this.socket.emit('setClientId', response.data.token);
+            store.commit('setToken', response.data.token);
+            store.commit('setRefreshToken', response.data.refreshToken);
+            store.commit('showSnackbarinfo', {
+              message: 'Login successful',
+              color: 'success',
+            });
+            this.createAccount();
           })
           .catch(function () {
             store.commit('showSnackbarinfo', {

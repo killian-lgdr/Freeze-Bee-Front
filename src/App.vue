@@ -69,15 +69,17 @@
 </template>
 
 <script>
-import {computed} from 'vue';
-import {useStore} from '@/services/store';
-import {io} from "socket.io-client";
+import { computed } from 'vue';
+import { useStore } from '@/services/store';
+import { io } from "socket.io-client";
+
+const socket = io(process.env.VUE_APP_WEBSOCKET_URL); // Déclarer socket en dehors de setup()
 
 export default {
   name: 'App',
   data() {
     return {
-      isMobile: false, // Ajoutez cette propriété
+      isMobile: false,
     };
   },
   mounted() {
@@ -95,8 +97,6 @@ export default {
     const isAuthenticated = computed(() => store.getters.isAuthenticated);
     const snackbarinfo = computed(() => store.state.snackbarinfo);
     const snackbarorder = computed(() => store.state.snackbarorder);
-
-    const socket = io(process.env.WEBSOCKET_URL);
 
     socket.on("order.cooked", () => {
       store.commit('showSnackbarorder', {
@@ -118,7 +118,7 @@ export default {
     });
 
     const logout = () => {
-      this.socket.disconnect();
+      socket.disconnect(); // Utiliser socket sans 'this.'
       store.commit('clearTokens');
       store.commit('showSnackbarinfo', {
         message: 'Log out successful',
@@ -131,7 +131,7 @@ export default {
       snackbarinfo,
       snackbarorder,
       logout
-    }
+    };
   },
-}
+};
 </script>
