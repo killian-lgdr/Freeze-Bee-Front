@@ -18,7 +18,7 @@
                   <v-card-title class="text-center">{{ menu.name }}</v-card-title>
                   <v-card-subtitle>{{ menu.description }}</v-card-subtitle>
                   <v-card-actions class="justify-center">
-                    <v-btn color="error" @click="removeFromCart(menu)" :to="`/cart`">Remove</v-btn>
+                    <v-btn color="error" @click="removeFromCart(menu.id, menu.amount)" :to="`/cart`">Remove</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -48,7 +48,7 @@ export default {
             id: '',
             name: '',
             description: '',
-            amount: '',
+            amount: 0,
           }
         ]
       },
@@ -81,15 +81,24 @@ export default {
             });
           });
     },
-    removeFromCart(selectedMenu) {
+    removeFromCart(id, amount) {
       this.isCartLoaded = false;
       store.commit('showSnackbarinfo', {
         message: 'Updating menus...',
         color: 'info',
       });
+
       const newCart = this.cart;
-      newCart.menus = this.cart.menus.filter(menu => menu.id !== selectedMenu.id);
-      bffAxios.put(`/removetomycart`, {menu: {id: selectedMenu.id, amount: selectedMenu.amount}})
+      newCart.menus = this.cart.menus.filter(menu => menu.id !== id);
+
+      const menuData = {
+        id: id,
+        amount: amount
+      };
+
+      menuData.amount = 0;
+
+      bffAxios.put(`/removetomycart`, {menu: menuData})
           .then(response => {
             this.cart = response.data;
             store.commit('showSnackbarinfo', {

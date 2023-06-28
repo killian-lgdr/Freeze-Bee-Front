@@ -17,7 +17,7 @@
           </v-col>
         </v-row>
         <v-card-actions class="justify-center">
-          <v-btn color="secondary" @click="addToCart(menu)">Add to cart</v-btn>
+          <v-btn color="secondary" @click="addToCart(menu.restorerId, menu.id, menu.amount)">Add to cart</v-btn>
           <v-btn color="error" :to="`/catalogs/${this.$route.params.catalogId}`">Back</v-btn>
         </v-card-actions>
       </v-card>
@@ -32,9 +32,9 @@ import {store} from "@/services/store";
 export default {
   data() {
     return {
-      id: '',
       menu: {
         id: '',
+        restorerId:'',
         image: '',
         name: '',
         description: '',
@@ -79,12 +79,19 @@ export default {
             });
           });
     },
-    addToCart(menu) {
+    addToCart(restorerId, id, amount) {
       store.commit('showSnackbarinfo', {
         message: 'Update Cart...',
         color: 'info',
       });
-      bffAxios.put('/addtomycart', {menu: {id: menu.id, amount: menu.amount}})
+
+      const menuData = {
+        restorerId: restorerId,
+        id: id,
+        amount: amount
+      };
+      console.log(menuData)
+      bffAxios.put('/addtomycart', {menu: menuData})
           .then(() => {
             store.commit('showSnackbarinfo', {
               message: 'Cart updated',
@@ -92,13 +99,13 @@ export default {
             });
           })
           .catch(error => {
-            console.error(error);
+            console.error(error.message);
             store.commit('showSnackbarinfo', {
               message: 'Update failed',
               color: 'error',
             });
           });
     }
-  },
+  }
 };
 </script>
