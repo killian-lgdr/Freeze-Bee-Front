@@ -117,9 +117,7 @@ export default {
         message: 'Creating identity...',
         color: 'info',
       });
-
-      identityAxios
-          .post('/register', this.credentials)
+      identityAxios.post('/register', this.credentials)
           .then((response) => {
             console.log(response);
             store.commit('showSnackbarinfo', {
