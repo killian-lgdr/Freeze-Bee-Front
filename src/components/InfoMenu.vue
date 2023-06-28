@@ -18,7 +18,7 @@
         </v-row>
         <v-card-actions class="justify-center">
           <v-btn color="secondary" @click="addToCart(menu)">Add to cart</v-btn>
-          <v-btn color="error" :to="`/catalogs/${id}`">Back</v-btn>
+          <v-btn color="error" :to="`/catalogs/${this.$route.params.catalogId}`">Back</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -62,7 +62,7 @@ export default {
         message: 'Recovering menu...',
         color: 'info',
       });
-      bffAxios.get(`/catalogs/${this.params.catalogId}/menus/${this.params.menuId}`)
+      bffAxios.get(`/catalogs/${this.$route.params.catalogId}/menus/${this.$route.params.menuId}`)
           .then(response => {
             this.menu = response.data;
             this.isMenuLoaded = true;
