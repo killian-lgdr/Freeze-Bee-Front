@@ -58,15 +58,14 @@ export default {
       });
       identityAxios.post('/login', this.credentials)
           .then(function (response) {
-            console.log('token received : '+ response.data.token)
-            //this.socket.connect();
-            //this.socket.emit('setClientId', response.data.token);
             store.commit('setToken', response.data.token);
             store.commit('setRefreshToken', response.data.refreshToken);
             store.commit('showSnackbarinfo', {
               message: 'Login successful',
               color: 'success',
             });
+            this.socket.connect();
+            this.socket.emit('setClientId', response.data.token);
           })
           .catch(function () {
             store.commit('showSnackbarinfo', {

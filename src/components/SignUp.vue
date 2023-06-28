@@ -57,8 +57,28 @@
 </template>
 
 <script>
-import {identityAxios, bffAxios} from "@/services/axios";
-import {store} from "@/services/store";
+import { identityAxios, bffAxios } from "@/services/axios";
+import { store } from "@/services/store";
+
+function createAccount() {
+  store.commit('showSnackbarinfo', {
+    message: 'Creating account...',
+    color: 'info',
+  });
+  bffAxios.post('/accounts', this.form)
+      .then(() => {
+        store.commit('showSnackbarinfo', {
+          message: 'Account created',
+          color: 'success',
+        });
+      })
+      .catch(() => {
+        store.commit('showSnackbarinfo', {
+          message: 'Account creation failed',
+          color: 'error',
+        });
+      });
+}
 
 export default {
   data() {
@@ -66,30 +86,30 @@ export default {
       credentials: {
         mail: "",
         password: "",
-        type: "user"
+        type: "user",
       },
       form: {
-        firstName: '',
-        name: '',
+        firstName: "",
+        name: "",
         birthday: null,
         phoneNumber: null,
         address: {
-          street: '',
+          street: "",
           postalCode: null,
-          city: '',
-          country: '',
+          city: "",
+          country: "",
         },
       },
       show1: false,
       rules: {
-        required: value => !!value || 'Required.',
-        min: value => (value && value.length >= 6) || 'Password must be at least 6 characters long.',
-        email: value => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(value) || 'Invalid e-mail.'
+        required: (value) => !!value || "Required.",
+        min: (value) => (value && value.length >= 6) || "Password must be at least 6 characters long.",
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Invalid e-mail.";
         },
       },
-    }
+    };
   },
   methods: {
     register() {
@@ -106,7 +126,7 @@ export default {
               message: 'Identity created',
               color: 'success',
             });
-            this.login(); // Utilisation de la fonction fléchée
+            this.login();
           })
           .catch((error) => {
             console.log(error.message);
@@ -117,7 +137,7 @@ export default {
           });
     },
     login() {
-      const {mail, password} = this.credentials;
+      const { mail, password } = this.credentials;
       store.commit('showSnackbarinfo', {
         message: 'Connecting...',
         color: 'info',
@@ -126,9 +146,7 @@ export default {
         mail: mail,
         password: password,
       })
-          .then(function (response) {
-            this.socket.connect();
-            this.socket.emit('setClientId', response.data.token);
+          .then((response) => {
             store.commit('setToken', response.data.token);
             store.commit('setRefreshToken', response.data.refreshToken);
             store.commit('showSnackbarinfo', {
@@ -136,33 +154,21 @@ export default {
               color: 'success',
             });
             this.createAccount();
+            this.socket.connect();
+            this.socket.emit('setClientId', response.data.token);
           })
-          .catch(function () {
+          .catch((error) => {
+            console.log(error);
             store.commit('showSnackbarinfo', {
               message: 'Login failed',
               color: 'error',
             });
           });
     },
-    createAccount() {
-      store.commit('showSnackbarinfo', {
-        message: 'Creating account...',
-        color: 'info',
-      });
-      bffAxios.post('/accounts', this.form)
-          .then(() => {
-            store.commit('showSnackbarinfo', {
-              message: 'Account created',
-              color: 'success',
-            });
-          })
-          .catch(() => {
-            store.commit('showSnackbarinfo', {
-              message: 'Account creation failed',
-              color: 'error',
-            });
-          });
-    },
+  },
+  created() {
+    // Call createAccount method
+    this.createAccount = createAccount.bind(this);
   },
 };
 </script>
