@@ -41,7 +41,7 @@ export const store = createStore<State>({
             show: false,
             message: {id:'', status: ''},
             color: '',
-            timeout: 60000,
+            timeout: -1,
             top: false
         },
     },
