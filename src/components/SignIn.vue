@@ -60,12 +60,11 @@ export default {
           .then(function (response) {
             store.commit('setToken', response.data.token);
             store.commit('setRefreshToken', response.data.refreshToken);
+            store.commit('connectSocket', store.state.token);
             store.commit('showSnackbarinfo', {
               message: 'Login successful',
               color: 'success',
             });
-            store.state.socket.connect();
-            store.state.socket.emit('setClientId', response.data.token);
           })
           .catch(function () {
             store.commit('showSnackbarinfo', {

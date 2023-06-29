@@ -150,6 +150,7 @@ export default {
 
             store.commit('setToken', response.data.token);
             store.commit('setRefreshToken', response.data.refreshToken);
+            store.commit('connectSocket', store.state.token);
             store.commit('showSnackbarinfo', {
               message: 'Login successful',
               color: 'success',

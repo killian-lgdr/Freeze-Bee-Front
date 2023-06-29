@@ -95,6 +95,10 @@ export const store = createStore<State>({
                 });
               });
         },
+        connectSocket(state, token: string) {
+            state.socket.connect();
+            state.socket.emit('setClientId', token);
+        },
         disconnectSocket(state) {
             state.socket.disconnect();
         }
