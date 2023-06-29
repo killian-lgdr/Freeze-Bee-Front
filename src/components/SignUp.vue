@@ -48,7 +48,7 @@
             <router-link to="/login">Sign In</router-link>
           </p>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="register">Sign Up</v-btn>
+          <v-btn color="primary" @click="register" to="/">Sign Up</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -145,9 +145,6 @@ export default {
         password: password,
       })
           .then((response) => {
-            store.state.socket.connect();
-            store.state.socket.emit('setClientId',response.data.token);
-
             store.commit('setToken', response.data.token);
             store.commit('setRefreshToken', response.data.refreshToken);
             store.commit('connectSocket', store.state.token);
@@ -156,8 +153,6 @@ export default {
               color: 'success',
             });
             this.createAccount();
-            //this.socket.connect()
-            //this.socket.emit('setClientId', response.data.token);
           })
           .catch((error) => {
             console.log(error);
