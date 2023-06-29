@@ -1,7 +1,7 @@
 <template>
   <v-container class="cart-container">
     <v-row justify="center">
-      <v-col cols="12">
+      <v-col  v-if="isCartLoaded" cols="12">
         <v-card class="cart-card">
           <v-card-title class="text-center">Cart for {{ cart.name }}</v-card-title>
           <v-card-subtitle>Amount: {{ cart.amount }}</v-card-subtitle>
@@ -53,7 +53,7 @@ export default {
           }
         ]
       },
-      isCartLoaded: true
+      isCartLoaded: false
     }
   },
   mounted() {
