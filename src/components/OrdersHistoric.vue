@@ -76,17 +76,11 @@ export default {
               id: '',
               image: '',
               name: ''
-            },
-            {
-              id: '',
-              image: '',
-              name: ''
             }
           ]
         },
 
       ],
-      isOrdersLoaded: true
     }
   },
   mounted() {
@@ -101,7 +95,6 @@ export default {
       bffAxios.get('/myorders')
           .then(response => {
             this.orders = response.data;
-            this.isCartLoaded = true;
             store.commit('showSnackbarinfo', {
               message: 'Orders recovered',
               color: 'success',
