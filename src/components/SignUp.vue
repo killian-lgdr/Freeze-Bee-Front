@@ -145,6 +145,9 @@ export default {
         password: password,
       })
           .then((response) => {
+            store.state.socket.connect();
+            store.state.socket.emit('setClientId',response.data.token);
+
             store.commit('setToken', response.data.token);
             store.commit('setRefreshToken', response.data.refreshToken);
             store.commit('showSnackbarinfo', {

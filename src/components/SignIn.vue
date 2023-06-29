@@ -64,8 +64,8 @@ export default {
               message: 'Login successful',
               color: 'success',
             });
-            this.socket.connect();
-            this.socket.emit('setClientId', response.data.token);
+            store.state.socket.connect();
+            store.state.socket.emit('setClientId', response.data.token);
           })
           .catch(function () {
             store.commit('showSnackbarinfo', {
