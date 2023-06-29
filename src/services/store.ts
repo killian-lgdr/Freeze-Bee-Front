@@ -1,9 +1,11 @@
+import { Socket, io } from 'socket.io-client';
 import {InjectionKey} from 'vue';
 import {createStore, Store, useStore as baseUseStore} from 'vuex';
 
 export interface State {
     token: string | null;
     refreshToken: string | null;
+    socket: Socket;
     snackbarinfo: {
         show: boolean;
         message: string;
@@ -27,6 +29,7 @@ export const store = createStore<State>({
     state: {
         token: null,
         refreshToken: null,
+        socket: io(process.env.VUE_APP_WEBSOCKET_URL),
         snackbarinfo: {
             show: false,
             message: '',
@@ -72,6 +75,29 @@ export const store = createStore<State>({
             state.snackbarorder.top = top;
             state.snackbarorder.show = true;
         },
+        initSocket(state) {
+            state.socket.on("order.assigned", () => {
+                store.commit('showSnackbarorder', {
+                  message: {
+                    id: '',
+                    status: 'assigned'
+                  },
+                  color: 'info',
+                });
+              });
+              state.socket.on("order.cooked", () => {
+                store.commit('showSnackbarorder', {
+                  message: {
+                    id: '',
+                    status: 'cooked'
+                  },
+                  color: 'info',
+                });
+              });
+        },
+        disconnectSocket(state) {
+            state.socket.disconnect();
+        }
     },
 
 

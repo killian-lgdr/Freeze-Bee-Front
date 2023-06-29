@@ -71,9 +71,6 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from '@/services/store';
-import { io } from "socket.io-client";
-
-const socket = io(process.env.VUE_APP_WEBSOCKET_URL); // Déclarer socket en dehors de setup()
 
 export default {
   name: 'App',
@@ -97,28 +94,11 @@ export default {
     const isAuthenticated = computed(() => store.getters.isAuthenticated);
     const snackbarinfo = computed(() => store.state.snackbarinfo);
     const snackbarorder = computed(() => store.state.snackbarorder);
-
-    socket.on("order.cooked", () => {
-      store.commit('showSnackbarorder', {
-        message: {
-          id: '',
-          status: 'cooked'
-        },
-        color: 'info',
-      });
-    });
-    socket.on("order.delivered", () => {
-      store.commit('showSnackbarorder', {
-        message: {
-          id: '',
-          status: 'delivered'
-        },
-        color: 'info',
-      });
-    });
+    
+    store.commit('initSocket');
 
     const logout = () => {
-      socket.disconnect(); // Utiliser socket sans 'this.'
+      store.commit('disconnectSocket');
       store.commit('clearTokens');
       store.commit('showSnackbarinfo', {
         message: 'Log out successful',
