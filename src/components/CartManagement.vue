@@ -41,6 +41,7 @@ export default {
   data() {
     return {
       cart: {
+        id: '',
         name: '',
         amount: '',
         menus: [

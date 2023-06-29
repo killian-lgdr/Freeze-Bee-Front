@@ -7,12 +7,12 @@
   <v-row>
     <v-col cols="12" v-for="order in orders" :key="order.id">
       <v-card class="text-center">
-        <v-card-title>{{ order.restorer.name }}</v-card-title>
-        <v-card-subtitle>For {{order.user.name}}</v-card-subtitle>
+        <v-card-title>{{ order?.restorer?.name }}</v-card-title>
+        <v-card-subtitle>For {{order?.user?.name}}</v-card-subtitle>
         <v-card-text>
           <v-row>
-            <v-col cols="6"><v-chip color="primary">{{ order.status }}</v-chip></v-col>
-            <v-col cols="6"><v-chip color="primary">{{ order.date }}</v-chip></v-col>
+            <v-col cols="6"><v-chip color="primary">{{ order?.status }}</v-chip></v-col>
+            <v-col cols="6"><v-chip color="primary">{{ order?.date }}</v-chip></v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
@@ -20,10 +20,10 @@
                 <v-card-title>Addresses</v-card-title>
                 <v-card-text>
                   <v-row>
-                    <v-col cols="12">Restorer: {{ order.restorer.address }}</v-col>
+                    <v-col cols="12">Restorer: {{ order?.restorer?.address }}</v-col>
                   </v-row>
                   <v-row>
-                    <v-col cols="12">User: {{ order.user.address }}</v-col>
+                    <v-col cols="12">User: {{ order?.user?.address }}</v-col>
                   </v-row>
                 </v-card-text>
               </v-card>
@@ -36,12 +36,12 @@
                     :src="menu.image"
                     height="200px"
                 ></v-img>
-                <v-card-title>{{ menu.name }}</v-card-title>
+                <v-card-title>{{ menu?.name }}</v-card-title>
               </v-card>
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12">amount: {{ order.amount }}</v-col>
+            <v-col cols="12">amount: {{ order?.amount }}</v-col>
           </v-row>
         </v-card-text>
       </v-card>
@@ -76,17 +76,11 @@ export default {
               id: '',
               image: '',
               name: ''
-            },
-            {
-              id: '',
-              image: '',
-              name: ''
             }
           ]
         },
 
       ],
-      isOrdersLoaded: true
     }
   },
   mounted() {
@@ -101,7 +95,6 @@ export default {
       bffAxios.get('/myorders')
           .then(response => {
             this.orders = response.data;
-            this.isCartLoaded = true;
             store.commit('showSnackbarinfo', {
               message: 'Orders recovered',
               color: 'success',
