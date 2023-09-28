@@ -15,7 +15,7 @@
                 </v-col>
                 <v-col cols="5">
                   <v-select
-                      v-model="selectedProduct"
+                      v-model="form.selectedProduct"
                       :items="form.productOptions"
                       label="Product"
                   ></v-select>
@@ -80,9 +80,11 @@ export default {
         id: '',
         nom: '',
         description: '',
-        productOptions: '', // How that is work ?
+        selectedProduct: '',
+        productOptions: '',
         commentaire: ''
       },
+      allProduct: null,
       allProcess: [
         {
           id: '',
@@ -92,13 +94,6 @@ export default {
           commentaire: ''
         }
       ],
-      processToSend:{
-        id: '',
-        nom: '',
-        description: '',
-        product: {}, // How that is work ?
-        commentaire: ''
-      },
       isProcessLoaded: false
     }
   },
@@ -107,6 +102,14 @@ export default {
   },
   methods: {
     getAllProcess() {
+      bffAxios.get('/product')
+          .then(response => {
+            this.allProducts = response.data;
+            this.form.productOptions = response.data.map(product => product.nom);
+          })
+          .catch(error => {
+            console.error(error);
+          });
       bffAxios.get('/process')
           .then(response => {
             this.allProcess = response.data;
@@ -119,17 +122,30 @@ export default {
     getProcess() {
       bffAxios.get('/process/' + this.form.id)
           .then(response => {
-            this.form = response.data;
+            const process = response.data;
+
+            this.form.nom = process.nom;
+            this.form.description = process.description;
+            this.form.selectedProduct = process.product.nom;
+            this.form.commentaire = process.commentaire;
           })
           .catch(error => {
             console.error(error);
           });
     },
     createProcess() {
-      bffAxios.get('/product/' + 5)
-      bffAxios.post('/process', )
-          .then(response => {
-            this.form = response.data;
+      console.log(this.form.productOptions)
+      const newProcess = {
+        nom: this.form.nom,
+        description: this.form.description,
+        product: this.allProducts.find(product => product.nom === this.form.selectedProduct),
+        commentaire: this.form.commentaire
+      };
+
+      bffAxios.post('/process', newProcess)
+          .then(() => {
+            this.isProcessLoaded = false;
+            this.getAllProcess();
           })
           .catch(error => {
             console.error(error);
