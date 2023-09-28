@@ -3,10 +3,9 @@
     <v-row justify="center">
       <v-col cols="12" sm="8" md="6">
         <v-card class="home-card">
-          <v-card-title class="text-center">Bienvenue sur CESI Eats</v-card-title>
+          <v-card-title class="text-center">Bienvenue sur Killer Bee Compagny !</v-card-title>
           <v-card-text>
-            <p>Sur CESI Eats, vous pouvez explorer une variété de restaurants et menus pour satisfaire vos papilles.</p>
-            <p>Profitez d'une expérience de commande facile et pratique pour vous régaler.</p>
+            <p>La meilleure entreprise de création de Freesebe.</p>
           </v-card-text>
         </v-card>
       </v-col>
