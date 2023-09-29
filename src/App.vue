@@ -11,6 +11,9 @@
       <v-btn to="/product" icon>
         <v-icon>mdi-silverware-fork-knife</v-icon>
       </v-btn>
+      <v-btn to="/ingredient" icon>
+        <v-icon>mdi-silverware-fork-knife</v-icon>
+      </v-btn>
       <v-btn to="/" icon>
         <v-icon>mdi-login</v-icon>
       </v-btn>

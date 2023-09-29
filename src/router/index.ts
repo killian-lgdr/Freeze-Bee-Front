@@ -3,6 +3,7 @@ import {createRouter, createWebHashHistory} from 'vue-router'
 import HomePageView from "@/views/HomePageView.vue";
 import ProcessView from "@/views/ProcessView.vue";
 import ProductView from "@/views/ProductView.vue";
+import IngredientView from "@/views/IngredientView.vue";
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         path: '/product',
         name: 'product',
         component: ProductView
+    },
+    {
+        path: '/ingredient',
+        name: 'ingredient',
+        component: IngredientView
     }
 ]
 

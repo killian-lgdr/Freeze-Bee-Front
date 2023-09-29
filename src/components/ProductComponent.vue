@@ -7,14 +7,24 @@
           <v-card-text>
             <v-form>
               <v-row>
-                <v-col cols="2">
+                <v-col cols="1">
                   <v-text-field v-model="form.id" label="id"></v-text-field>
                 </v-col>
-                <v-col cols="5">
+                <v-col cols="4">
                   <v-text-field v-model="form.nom" label="Nom"></v-text-field>
                 </v-col>
-                <v-col cols="5">
-                  // Ingredient part form
+                <v-col cols="3">
+                  <v-text-field v-model="form.gamme" label="Gamme"></v-text-field>
+                </v-col>
+                <v-col cols="4">
+                  <v-select
+                      v-model="form.selectedIngredients"
+                      :items="form.ingredientOptions"
+                      label="Ingrédients"
+                      multiple
+                      chips
+                      dense
+                  ></v-select>
                 </v-col>
               </v-row>
               <v-row>
@@ -47,6 +57,9 @@
               <v-card-subtitle>{{ Product.id }}</v-card-subtitle>
               <v-card-text>
                 <v-row>
+                  <v-col cols="12">{{ Product.gamme }}</v-col>
+                </v-row>
+                <v-row>
                   <v-col cols="12">{{ Product.description }}</v-col>
                 </v-row>
                 <v-row>
@@ -73,12 +86,13 @@ export default {
       form: {
         id: '',
         nom: '',
+        gamme: '',
         description: '',
         pUHT: '',
-        //Ingredient part form
-        grammage: ''
+        selectedIngredients: [],
+        ingredientOptions: []
       },
-      allIngredient: null,
+      allIngredients: null,
       allProduct: [
         {
           id: '',
@@ -102,8 +116,8 @@ export default {
     getAllProduct() {
       bffAxios.get('/ingredient')
           .then(response => {
-            this.allIngredient = response.data;
-            // Ingredient form parser
+            this.allIngredients = response.data;
+            this.form.ingredientOptions = response.data.map(ingredient => ingredient.nom);
           })
           .catch(error => {
             console.error(error);
@@ -120,23 +134,36 @@ export default {
     getProduct() {
       bffAxios.get('/product/' + this.form.id)
           .then(response => {
-            const Product = response.data;
-
-            this.form.nom = Product.nom;
-            this.form.description = Product.description;
-            this.form.pUHT = Product.pUHT;
-            //Ingredient filling
+            this.form.nom = response.data.nom;
+            this.form.description = response.data.description;
+            this.form.pUHT = response.data.pUHT;
+            this.form.gamme = response.data.gamme;
+            this.form.selectedIngredients = response.data.productIngredients.map(item => item.ingredient.nom);
           })
           .catch(error => {
             console.error(error);
           });
     },
     createProduct() {
+      const selectedIngredientNames = this.form.selectedIngredients;
+      const productIngredients = selectedIngredientNames.map(name => {
+        const ingredient = this.allIngredients.find(ing => ing.nom === name);
+        return {
+          ingredient: {
+            id: ingredient.id,
+            nom: ingredient.nom,
+            description: ingredient.description,
+          },
+          grammage: 100,
+        };
+      });
+
       const newProduct = {
         nom: this.form.nom,
         description: this.form.description,
-        Ingredient: this.allIngredients.find(Ingredient => Ingredient.nom === this.form.selectedIngredient),
-        pUHT: this.form.pUHT
+        pUHT: this.form.pUHT,
+        gamme: this.form.gamme,
+        productIngredients: productIngredients,
       };
 
       bffAxios.post('/product', newProduct)
@@ -149,12 +176,26 @@ export default {
           });
     },
     updateProduct() {
+      const selectedIngredientNames = this.form.selectedIngredients;
+      const productIngredients = selectedIngredientNames.map(name => {
+        const ingredient = this.allIngredients.find(ing => ing.nom === name);
+        return {
+          ingredient: {
+            id: ingredient.id,
+            nom: ingredient.nom,
+            description: ingredient.description,
+          },
+          grammage: 100,
+        };
+      });
+
       const newProduct = {
         id: this.form.id,
         nom: this.form.nom,
         description: this.form.description,
-        Ingredient: this.allIngredients.find(Ingredient => Ingredient.nom === this.form.selectedIngredient),
-        pUHT: this.form.pUHT
+        pUHT: this.form.pUHT,
+        gamme: this.form.gamme,
+        productIngredients: productIngredients,
       };
 
       bffAxios.put('/product', newProduct)
