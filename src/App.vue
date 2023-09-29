@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar v-if="!isMobile" color="primary" app>
+    <v-app-bar color="primary" app>
       <v-btn to="/">
         <v-toolbar-title>CESI Eats</v-toolbar-title>
       </v-btn>
@@ -8,7 +8,10 @@
       <v-btn to="/process" icon>
         <v-icon>mdi-silverware-fork-knife</v-icon>
       </v-btn>
-      <v-btn to="/login" icon>
+      <v-btn to="/product" icon>
+        <v-icon>mdi-silverware-fork-knife</v-icon>
+      </v-btn>
+      <v-btn to="/" icon>
         <v-icon>mdi-login</v-icon>
       </v-btn>
     </v-app-bar>

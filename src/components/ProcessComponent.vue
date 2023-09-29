@@ -13,7 +13,7 @@
                 <v-col cols="5">
                   <v-text-field v-model="form.nom" label="Nom"></v-text-field>
                 </v-col>
-                <v-col cols="5">
+                <v-col v-if="isProductLoaded" cols="5">
                   <v-select
                       v-model="form.selectedProduct"
                       :items="form.productOptions"
@@ -21,7 +21,6 @@
                   ></v-select>
                 </v-col>
               </v-row>
-
               <v-row>
                 <v-col cols="6">
                   <v-textarea v-model="form.description" label="Description"></v-textarea>
@@ -42,7 +41,6 @@
       </v-col>
     </v-row>
   </v-container>
-
   <v-container class="cart-container">
     <v-row justify="center">
       <v-col v-if="isProcessLoaded" cols="12">
@@ -94,7 +92,8 @@ export default {
           commentaire: ''
         }
       ],
-      isProcessLoaded: false
+      isProcessLoaded: false,
+      isProductLoaded: false
     }
   },
   mounted() {
@@ -106,6 +105,7 @@ export default {
           .then(response => {
             this.allProducts = response.data;
             this.form.productOptions = response.data.map(product => product.nom);
+            this.isProductLoaded = true;
           })
           .catch(error => {
             console.error(error);
@@ -134,7 +134,6 @@ export default {
           });
     },
     createProcess() {
-      console.log(this.form.productOptions)
       const newProcess = {
         nom: this.form.nom,
         description: this.form.description,
@@ -145,6 +144,26 @@ export default {
       bffAxios.post('/process', newProcess)
           .then(() => {
             this.isProcessLoaded = false;
+            this.isProductLoaded = false;
+            this.getAllProcess();
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
+    updateProcess() {
+      const newProcess = {
+        id: this.form.id,
+        nom: this.form.nom,
+        description: this.form.description,
+        product: this.allProducts.find(product => product.nom === this.form.selectedProduct),
+        commentaire: this.form.commentaire
+      };
+
+      bffAxios.put('/process', newProcess)
+          .then(() => {
+            this.isProcessLoaded = false;
+            this.isProductLoaded = false;
             this.getAllProcess();
           })
           .catch(error => {
@@ -155,6 +174,7 @@ export default {
       bffAxios.delete(`/process/` + this.form.id)
           .then(() => {
             this.isProcessLoaded = false;
+            this.isProductLoaded = false;
             this.getAllProcess();
           })
           .catch(error => {
