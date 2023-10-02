@@ -88,7 +88,7 @@ export default {
           id: '',
           nom: '',
           description: '',
-          product: {name: ''},
+          product: {nom: ''},
           commentaire: ''
         }
       ],

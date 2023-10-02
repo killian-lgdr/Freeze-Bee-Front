@@ -97,6 +97,7 @@ export default {
         {
           id: '',
           nom: '',
+          gamme: '',
           description: '',
           pUHT: '',
           productIngredients: [{
