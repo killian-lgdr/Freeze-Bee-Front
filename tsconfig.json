@@ -35,7 +35,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/auth/keycloak.js"  ],
   "exclude": [
     "node_modules"
   ],

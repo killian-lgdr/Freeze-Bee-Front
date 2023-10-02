@@ -77,8 +77,8 @@
   </v-container>
 </template>
 
-<script>
-import {bffAxios} from '@/services/axios';
+<script lang="ts">
+import HttpService from '@/services/HttpService';
 
 export default {
   data() {
@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     getAllProduct() {
-      bffAxios.get('/ingredient')
+      HttpService.getAxiosClient().get('/ingredient')
           .then(response => {
             this.allIngredients = response.data;
             this.form.ingredientOptions = response.data.map(ingredient => ingredient.nom);
@@ -122,7 +122,7 @@ export default {
           .catch(error => {
             console.error(error);
           });
-      bffAxios.get('/product')
+      HttpService.getAxiosClient().get('/product')
           .then(response => {
             this.allProduct = response.data;
             this.isProductLoaded = true;
@@ -132,7 +132,7 @@ export default {
           });
     },
     getProduct() {
-      bffAxios.get('/product/' + this.form.id)
+      HttpService.getAxiosClient().get('/product/' + this.form.id)
           .then(response => {
             this.form.nom = response.data.nom;
             this.form.description = response.data.description;
@@ -166,7 +166,7 @@ export default {
         productIngredients: productIngredients,
       };
 
-      bffAxios.post('/product', newProduct)
+      HttpService.getAxiosClient().post('/product', newProduct)
           .then(() => {
             this.isProductLoaded = false;
             this.getAllProduct();
@@ -198,7 +198,7 @@ export default {
         productIngredients: productIngredients,
       };
 
-      bffAxios.put('/product', newProduct)
+      HttpService.getAxiosClient().put('/product', newProduct)
           .then(() => {
             this.isProductLoaded = false;
             this.getAllProduct();
@@ -208,7 +208,7 @@ export default {
           });
     },
     deleteProduct() {
-      bffAxios.delete(`/product/` + this.form.id)
+      HttpService.getAxiosClient().delete(`/product/` + this.form.id)
           .then(() => {
             this.isProductLoaded = false;
             this.getAllProduct();

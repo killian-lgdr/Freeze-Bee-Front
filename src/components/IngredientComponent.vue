@@ -50,8 +50,8 @@
   </v-container>
 </template>
 
-<script>
-import {bffAxios} from '@/services/axios';
+<script lang="ts">
+import HttpService from '@/services/HttpService';
 
 export default {
   data() {
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     getAllIngredient() {
-      bffAxios.get('/ingredient')
+      HttpService.getAxiosClient().get('/ingredient')
           .then(response => {
             this.allIngredient = response.data;
             this.isIngredientLoaded = true;
@@ -86,7 +86,7 @@ export default {
           });
     },
     getIngredient() {
-      bffAxios.get('/ingredient/' + this.form.id)
+      HttpService.getAxiosClient().get('/ingredient/' + this.form.id)
           .then(response => {
             this.form.nom = response.data.nom;
             this.form.description = response.data.description;
@@ -101,7 +101,7 @@ export default {
         description: this.form.description,
       };
 
-      bffAxios.post('/ingredient', newIngredient)
+      HttpService.getAxiosClient().post('/ingredient', newIngredient)
           .then(() => {
             this.isIngredientLoaded = false;
             this.getAllIngredient();
@@ -117,7 +117,7 @@ export default {
         description: this.form.description
       };
 
-      bffAxios.put('/ingredient', newIngredient)
+      HttpService.getAxiosClient().put('/ingredient', newIngredient)
           .then(() => {
             this.isIngredientLoaded = false;
             this.getAllIngredient();
@@ -127,7 +127,7 @@ export default {
           });
     },
     deleteIngredient() {
-      bffAxios.delete(`/ingredient/` + this.form.id)
+      HttpService.getAxiosClient().delete(`/ingredient/` + this.form.id)
           .then(() => {
             this.isIngredientLoaded = false;
             this.getAllIngredient();

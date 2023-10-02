@@ -68,8 +68,8 @@
   </v-container>
 </template>
 
-<script>
-import {bffAxios} from '@/services/axios';
+<script lang="ts">
+import HttpService from '@/services/HttpService';
 
 export default {
   data() {
@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     getAllProcess() {
-      bffAxios.get('/product')
+      HttpService.getAxiosClient().get('/product')
           .then(response => {
             this.allProducts = response.data;
             this.form.productOptions = response.data.map(product => product.nom);
@@ -110,7 +110,7 @@ export default {
           .catch(error => {
             console.error(error);
           });
-      bffAxios.get('/process')
+          HttpService.getAxiosClient().get('/process')
           .then(response => {
             this.allProcess = response.data;
             this.isProcessLoaded = true;
@@ -120,7 +120,7 @@ export default {
           });
     },
     getProcess() {
-      bffAxios.get('/process/' + this.form.id)
+      HttpService.getAxiosClient().get('/process/' + this.form.id)
           .then(response => {
             const process = response.data;
 
@@ -141,7 +141,7 @@ export default {
         commentaire: this.form.commentaire
       };
 
-      bffAxios.post('/process', newProcess)
+      HttpService.getAxiosClient().post('/process', newProcess)
           .then(() => {
             this.isProcessLoaded = false;
             this.isProductLoaded = false;
@@ -160,7 +160,7 @@ export default {
         commentaire: this.form.commentaire
       };
 
-      bffAxios.put('/process', newProcess)
+      HttpService.getAxiosClient().put('/process', newProcess)
           .then(() => {
             this.isProcessLoaded = false;
             this.isProductLoaded = false;
@@ -171,7 +171,7 @@ export default {
           });
     },
     deleteProcess() {
-      bffAxios.delete(`/process/` + this.form.id)
+      HttpService.getAxiosClient().delete(`/process/` + this.form.id)
           .then(() => {
             this.isProcessLoaded = false;
             this.isProductLoaded = false;
