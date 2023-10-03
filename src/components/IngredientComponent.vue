@@ -20,10 +20,10 @@
             </v-form>
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn color="primary" @click="getIngredient()">Récupérer</v-btn>
-            <v-btn color="primary" @click="createIngredient()">Créer</v-btn>
-            <v-btn color="primary" @click="updateIngredient()">Modifier</v-btn>
-            <v-btn color="primary" @click="deleteIngredient()">Supprimer</v-btn>
+            <v-btn v-if="KeyCloakService.HasRequiredRoles(['Production', 'R&D', 'Commerce'])" color="primary" @click="getIngredient()">Récupérer</v-btn>
+            <v-btn v-if="KeyCloakService.HasRequiredRoles(['R&D'])" color="primary" @click="createIngredient()">Créer</v-btn>
+            <v-btn v-if="KeyCloakService.HasRequiredRoles(['R&D'])" color="primary" @click="updateIngredient()">Modifier</v-btn>
+            <v-btn v-if="KeyCloakService.HasRequiredRoles(['R&D'])" color="primary" @click="deleteIngredient()">Supprimer</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -52,8 +52,14 @@
 
 <script>
 import HttpService from '@/services/HttpService';
+import KeyCloakService from "@/security/Keycloakservice";
 
 export default {
+  computed: {
+    KeyCloakService() {
+      return KeyCloakService
+    }
+  },
   data() {
     return {
       form: {

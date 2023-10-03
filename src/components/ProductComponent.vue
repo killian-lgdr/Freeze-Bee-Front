@@ -37,12 +37,12 @@
               </v-row>
             </v-form>
           </v-card-text>
-          <v-card-actions class="justify-center">
-            <v-btn color="primary" @click="getProduct()">Récupérer</v-btn>
-            <v-btn color="primary" @click="createProduct()">Créer</v-btn>
-            <v-btn color="primary" @click="updateProduct()">Modifier</v-btn>
-            <v-btn color="primary" @click="deleteProduct()">Supprimer</v-btn>
-          </v-card-actions>
+            <v-card-actions class="justify-center">
+              <v-btn v-if="KeyCloakService.HasRequiredRoles(['Production', 'R&D', 'Commerce'])" color="primary" @click="getProduct()">Récupérer</v-btn>
+              <v-btn v-if="KeyCloakService.HasRequiredRoles(['R&D'])" color="primary" @click="createProduct()">Créer</v-btn>
+              <v-btn v-if="KeyCloakService.HasRequiredRoles(['R&D'])" color="primary" @click="updateProduct()">Modifier</v-btn>
+              <v-btn v-if="KeyCloakService.HasRequiredRoles(['R&D'])" color="primary" @click="deleteProduct()">Supprimer</v-btn>
+            </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -79,8 +79,14 @@
 
 <script>
 import HttpService from '@/services/HttpService';
+import KeyCloakService from "@/security/Keycloakservice";
 
 export default {
+  computed: {
+    KeyCloakService() {
+      return KeyCloakService
+    }
+  },
   data() {
     return {
       form: {

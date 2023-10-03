@@ -5,13 +5,13 @@
         <v-toolbar-title>Killer Bee ERP</v-toolbar-title>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn to="/process">
+      <v-btn v-if="KeyCloakService.HasRequiredRoles(['Production', 'R&D'])" to="/process">
         Process
       </v-btn>
-      <v-btn to="/product">
+      <v-btn v-if="KeyCloakService.HasRequiredRoles(['Production', 'R&D', 'Commerce'])" to="/product">
         Products
       </v-btn>
-      <v-btn to="/ingredient">
+      <v-btn v-if="KeyCloakService.HasRequiredRoles(['Production', 'R&D', 'Commerce'])" to="/ingredient">
         Ingredients
       </v-btn>
       <v-btn to="/login">
@@ -36,6 +36,11 @@ import KeyCloakService from "@/security/Keycloakservice";
 
 export default {
   name: 'App',
+  computed: {
+    KeyCloakService() {
+      return KeyCloakService
+    }
+  },
   data() {
     return {
     };
