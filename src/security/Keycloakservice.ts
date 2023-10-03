@@ -1,6 +1,10 @@
 import Keycloak from "keycloak-js";
 
-const keycloakInstance = new Keycloak();
+const keycloakInstance = new Keycloak({
+  url: process.env.VUE_APP_KC_URL,
+  realm:  process.env.VUE_APP_KC_REALM,
+  clientId:  process.env.VUE_APP_KC_CLIENT_ID
+});
 
 interface CallbackOneParam<T1 = void, T2 = void> {
   (param1: T1): T2;

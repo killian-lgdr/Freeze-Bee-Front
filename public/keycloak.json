@@ -1,6 +1,6 @@
 {
     "realm": "quarkus",
-    "auth-server-url": "http://localhost:55583/",
+    "auth-server-url": "http://localhost:64261/",
     "ssl-required": "external",
     "resource": "erp-front",
     "public-client": true,

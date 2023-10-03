@@ -7,7 +7,7 @@ import KeyCloakService from "./security/Keycloakservice";
 import HttpService from './services/HttpService'
 
 loadFonts()
-
+console.log(process.env);
 const renderApp = () => {
     const app = createApp(App)
     app.use(router)

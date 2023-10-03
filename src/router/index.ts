@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from 'vue-router'
+import {createRouter, createWebHashHistory, NavigationGuardNext, RouteLocationNormalized} from 'vue-router'
 
 import HomePageView from "../views/HomePageView.vue";
 import ProcessView from "../views/ProcessView.vue";
@@ -8,27 +8,27 @@ import LoginView from "../views/LoginView.vue";
 
 const routes = [
     {
-        path: '/',
+        path: '/:state?:session_state?:code?',
         name: 'home',
         component: HomePageView
     },
     {
-        path: '/login',
+        path: '/login:state?:session_state?:code?',
         name: 'login',
         component: LoginView
     },
     {
-        path: '/process',
+        path: '/process:state?:session_state?:code?',
         name: 'process',
         component: ProcessView
     },
     {
-        path: '/product',
+        path: '/product:state?:session_state?:code?',
         name: 'product',
         component: ProductView
     },
     {
-        path: '/ingredient',
+        path: '/ingredient:state?:session_state?:code?',
         name: 'ingredient',
         component: IngredientView
     }

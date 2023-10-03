@@ -68,7 +68,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
 import HttpService from '@/services/HttpService';
 
 export default {
